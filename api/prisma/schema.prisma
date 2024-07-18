@@ -14,17 +14,56 @@ datasource db {
 }
 
 model User {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  email String  @unique
-  name  String?
-  Post  Post[]
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String @unique
+  username String
+  password String
+  role     String @default("GUEST")
+  // Review   Review[]
 }
 
-model Post {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  content   String
-  published Boolean
-  authorId  String  @map("author_id") @db.ObjectId
-  author    User?   @relation(fields: [authorId], references: [id])
+// Board Game
+model BoardGame {
+  id                   String              @id @default(auto()) @map("_id") @db.ObjectId
+  name                 String
+  description          String
+  image                String
+  minPlayers           Int
+  maxPlayers           Int
+  // minAge               Int
+  duration             Int
+  difficulty           Int
+  price                Int
+  status               String              @default("AVAILABLE")
+  BoardGame_Category   BoardGame_Category? @relation(fields: [boardGame_CategoryId], references: [id])
+  boardGame_CategoryId String?             @db.ObjectId
 }
+
+model BoardGame_Category {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  boardGames BoardGame[]
+}
+
+// room for playing games
+model Room {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  image       String
+  // location    String
+  capacity    Int
+  price       Int
+  // reviews     Review[]
+}
+
+// model Review {
+//   id          String     @id @default(auto()) @map("_id") @db.ObjectId
+//   rating      Int
+//   comment     String
+//   userId      String     @db.ObjectId
+//   user        User       @relation(fields: [userId], references: [id])
+//   BoardGame   BoardGame? @relation(fields: [boardGameId], references: [id])
+//   boardGameId String?    @db.ObjectId
+// }
