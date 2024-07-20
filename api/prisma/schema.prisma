@@ -14,30 +14,31 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  email    String @unique
-  username String
-  password String
-  role     String @default("GUEST")
-  // Review   Review[]
+  id                    String                  @id @default(auto()) @map("_id") @db.ObjectId
+  name                  String
+  email                 String                  @unique
+  username              String
+  password              String
+  role                  String                  @default("GUEST")
+  Room_Reservation      Room_Reservation[]
+  BoardGame_Reservation BoardGame_Reservation[]
 }
 
 // Board Game
 model BoardGame {
-  id                   String              @id @default(auto()) @map("_id") @db.ObjectId
-  name                 String
-  description          String
-  image                String
-  minPlayers           Int
-  maxPlayers           Int
-  // minAge               Int
-  duration             Int
-  difficulty           Int
-  price                Int
-  status               String              @default("AVAILABLE")
-  BoardGame_Category   BoardGame_Category? @relation(fields: [boardGame_CategoryId], references: [id])
-  boardGame_CategoryId String?             @db.ObjectId
+  id                    String                  @id @default(auto()) @map("_id") @db.ObjectId
+  name                  String
+  description           String
+  image                 String
+  minPlayers            Int
+  maxPlayers            Int
+  duration              Int
+  difficulty            Int
+  price                 Int
+  status                String                  @default("AVAILABLE")
+  BoardGame_Category    BoardGame_Category?     @relation(fields: [boardGame_CategoryId], references: [id])
+  boardGame_CategoryId  String?                 @db.ObjectId
+  BoardGame_Reservation BoardGame_Reservation[]
 }
 
 model BoardGame_Category {
@@ -46,24 +47,38 @@ model BoardGame_Category {
   boardGames BoardGame[]
 }
 
-// room for playing games
-model Room {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  image       String
-  // location    String
-  capacity    Int
-  price       Int
-  // reviews     Review[]
+model BoardGame_Reservation {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  boardGame   BoardGame @relation(fields: [boardGameId], references: [id])
+  boardGameId String    @db.ObjectId
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String    @db.ObjectId
+  dateStart   DateTime
+  dateEnd     DateTime
+  duration    Int
+  status      String    @default("PENDING")
 }
 
-// model Review {
-//   id          String     @id @default(auto()) @map("_id") @db.ObjectId
-//   rating      Int
-//   comment     String
-//   userId      String     @db.ObjectId
-//   user        User       @relation(fields: [userId], references: [id])
-//   BoardGame   BoardGame? @relation(fields: [boardGameId], references: [id])
-//   boardGameId String?    @db.ObjectId
-// }
+model Room {
+  id               String             @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  table            Int
+  description      String
+  image            String
+  capacity         Int
+  price            Int
+  status           String             @default("AVAILABLE")
+  Room_Reservation Room_Reservation[]
+}
+
+model Room_Reservation {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+  dateStart DateTime
+  dateEnd   DateTime
+  duration  Int
+  status    String   @default("PENDING")
+}
