@@ -20,6 +20,7 @@ model User {
   username              String
   password              String
   role                  String                  @default("GUEST")
+  status                String                  @default("ACTIVE")
   Room_Reservation      Room_Reservation[]
   BoardGame_Reservation BoardGame_Reservation[]
 }

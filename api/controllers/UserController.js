@@ -28,5 +28,38 @@ app.post('/create', async (req, res) => {
     res.send(user);
 });
 
+app.post('/signin', async (req, res) => {
+    try {
+        if (!req.body.username || !req.body.password) {
+            return res.status(400).send({ error: 'Invalid email or password' });
+        }
+
+        const user = await prisma.user.findFirst({
+            where: {
+                username: req.body.username,
+                password: req.body.password,
+                status: "ACTIVE",
+            },
+            select: {
+                id: true,
+                name: true,
+            }
+        });
+
+        console.log(user);
+
+        if (user != null) {
+            const secret = process.env.TOKEN_SECRET;
+            const token = jwt.sign(user, secret, {expiresIn: '1d'});
+            return res.send({ token: token });
+        }
+        res.status(401).send({ error: 'Invalid email or password' });
+
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
+
 
 module.exports = app;
