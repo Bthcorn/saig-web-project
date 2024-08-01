@@ -10,18 +10,21 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import React from "react"
+import { useNavigate } from "react-router-dom"
+import { Login } from "./action"
 
 export function LoginForm() {
+  const navigate = useNavigate();
   const [user, setUser] = React.useState({});
 
-  const test = () => {
-    console.log(user);
+  const handleLogin = async () => {
+    Login(user, navigate);
   }
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardTitle className="text-2xl">Board Game Login</CardTitle>
         <CardDescription>
           Enter your email below to login to your account.
         </CardDescription>
@@ -29,15 +32,15 @@ export function LoginForm() {
       <CardContent className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" onChange={(e) => setUser({...user, user: e.target.value})} required />
+          <Input id="email" type="email" placeholder="m@example.com" onChange={(e) => setUser({...user, username: e.target.value})} required />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" onChange={(e) => setUser({...user, pass: e.target.value})}  required />
+          <Input id="password" type="password" onChange={(e) => setUser({...user, password: e.target.value})}  required />
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={test}>Sign in</Button>
+        <Button className="w-full" onClick={handleLogin}>Sign in</Button>
       </CardFooter>
     </Card>
   )

@@ -2,7 +2,7 @@ const express = require('express');
 const app = express.Router();
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const jwt = require('jsonwebtoken'); 
+const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -38,28 +38,27 @@ app.post('/signin', async (req, res) => {
             where: {
                 username: req.body.username,
                 password: req.body.password,
-                status: "ACTIVE",
+                status: 'ACTIVE',
             },
             select: {
                 id: true,
                 name: true,
+                role: true,
             }
         });
 
-        console.log(user);
-
         if (user != null) {
             const secret = process.env.TOKEN_SECRET;
-            const token = jwt.sign(user, secret, {expiresIn: '1d'});
-            return res.send({ token: token });
+            const token = jwt.sign(user, secret, { expiresIn: '1d' });
+            return res.send({ token: token, user: user });
+        } else {
+            console.log('User not found');
         }
-        res.status(401).send({ error: 'Invalid email or password' });
+        res.status(401).send({ error: 'Unauthorized' });
 
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 });
-
-
 
 module.exports = app;
