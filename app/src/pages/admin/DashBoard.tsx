@@ -1,4 +1,4 @@
-// import NavLink from "next/NavLink"
+// import Link from "next/Link"
 import {
   Bell,
   CircleUser,
@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { NavLink } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 export default function Dashboard() {
 
@@ -40,10 +40,10 @@ export default function Dashboard() {
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <NavLink to="/" className="flex items-center gap-2 font-semibold">
+            <Link to="/" className="flex items-center gap-2 font-semibold">
               <Package2 className="h-6 w-6" />
-              <span className="">Acme Inc</span>
-            </NavLink>
+              <span className="">Board Game</span>
+            </Link>
             <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
               <Bell className="h-4 w-4" />
               <span className="sr-only">Toggle notifications</span>
@@ -51,14 +51,14 @@ export default function Dashboard() {
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <NavLink
-                to="#"
+              <Link
+                to="/"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Home className="h-4 w-4" />
                 Dashboard
-              </NavLink>
-              <NavLink
+              </Link>
+              <Link
                 to="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
@@ -67,28 +67,28 @@ export default function Dashboard() {
                 <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                   6
                 </Badge>
-              </NavLink>
-              <NavLink
+              </Link>
+              <Link
                 to="#"
                 className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
               >
                 <Package className="h-4 w-4" />
                 Products{" "}
-              </NavLink>
-              <NavLink
+              </Link>
+              <Link
                 to="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Users className="h-4 w-4" />
                 Customers
-              </NavLink>
-              <NavLink
+              </Link>
+              <Link
                 to="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <LineChart className="h-4 w-4" />
                 Analytics
-              </NavLink>
+              </Link>
             </nav>
           </div>
           <div className="mt-auto p-4">
@@ -124,21 +124,21 @@ export default function Dashboard() {
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
-                <NavLink
+                <Link
                   to="#"
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Package2 className="h-6 w-6" />
                   <span className="sr-only">Acme Inc</span>
-                </NavLink>
-                <NavLink
+                </Link>
+                <Link
                   to="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Home className="h-5 w-5" />
                   Dashboard
-                </NavLink>
-                <NavLink
+                </Link>
+                <Link
                   to="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
                 >
@@ -147,28 +147,28 @@ export default function Dashboard() {
                   <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                     6
                   </Badge>
-                </NavLink>
-                <NavLink
+                </Link>
+                <Link
                   to="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Package className="h-5 w-5" />
                   Products
-                </NavLink>
-                <NavLink
+                </Link>
+                <Link
                   to="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Users className="h-5 w-5" />
                   Customers
-                </NavLink>
-                <NavLink
+                </Link>
+                <Link
                   to="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <LineChart className="h-5 w-5" />
                   Analytics
-                </NavLink>
+                </Link>
               </nav>
               <div className="mt-auto">
                 <Card>
