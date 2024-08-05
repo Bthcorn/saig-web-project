@@ -1,12 +1,10 @@
+import { LoginForm } from '@/components/login-form'
 import React from 'react'
-import Home from './admin/Home'
 
-function SignIn() {
+export default function SignIn() {
   return (
-    <Home>
-      <div>Sign In</div>
-    </Home>
+    <div className='h-screen flex items-center justify-center'>
+      <LoginForm />
+    </div>
   )
 }
-
-export default SignIn
