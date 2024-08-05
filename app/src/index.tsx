@@ -1,34 +1,39 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import SignIn from './pages/SignIn';
-import Home from './pages/user/Home';
-import DashBoard from './pages/admin/DashBoard';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import SignIn from "./pages/SignIn";
+import Home from "./pages/user/Home";
+import DashBoard from "./pages/admin/DashBoard";
+import BoardGame from "./pages/admin/BoardGame";
 
 const Router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
   },
   {
-    path: '/signin',
+    path: "/signin",
     element: <SignIn />,
   },
   {
-    path: '/home',
+    path: "/home",
     element: <Home />,
   },
   {
-    path: '/dashboard',
+    path: "/dashboard",
     element: <DashBoard />,
-  }
+  },
+  {
+    path: "/boardgame",
+    element: <BoardGame />,
+  },
 ]);
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
