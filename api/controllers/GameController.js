@@ -8,8 +8,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 app.get('/list', async (req, res) => {
-    const games = await prisma.boardGame.findMany({});
-    res.send(games);
+    const result = await prisma.boardGame.findMany({});
+    res.send({ result: result });
 });
 
 app.get('/category/list', async (req, res) => {

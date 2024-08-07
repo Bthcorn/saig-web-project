@@ -4,31 +4,48 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import SignIn from "./pages/SignIn";
+import SignIn from "./pages/Login";
 import Home from "./pages/user/Home";
 import DashBoard from "./pages/admin/DashBoard";
 import BoardGame from "./pages/admin/BoardGame";
+import Customers from "./pages/admin/Customers";
+import Orders from "./pages/admin/Orders";
+import Rooms from "./pages/admin/Rooms";
 
 const Router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <SignIn />,
   },
   {
-    path: "/signin",
-    element: <SignIn />,
+    path: "/admin",
+    // add middleware to check if user is admin
+    children: [
+      {
+        path: "dashboard",
+        element: <DashBoard />,
+      },
+      {
+        path: "boardgame",
+        element: <BoardGame />,
+      },
+      {
+        path: "customers",
+        element: <Customers />,
+      },
+      {
+        path: "orders",
+        element: <Orders />,
+      },
+      {
+        path: "rooms",
+        element: <Rooms />,
+      },
+    ],
   },
   {
     path: "/home",
     element: <Home />,
-  },
-  {
-    path: "/dashboard",
-    element: <DashBoard />,
-  },
-  {
-    path: "/boardgame",
-    element: <BoardGame />,
   },
 ]);
 

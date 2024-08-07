@@ -1,9 +1,25 @@
 import { Button } from "@/components/ui/button";
-import { AdminHome } from "@/components/admin/home";
+import { AdminPage } from "@/components/admin/home";
+import { useEffect } from "react";
+import { Login } from "@/components/login-form/action";
+import { redirect, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+  const checkLogin = () => {
+    const token = localStorage.getItem("token");
+    console.log("check login from dashboard", token);
+    if (token === null) {
+      navigate("/");
+    }
+  };
+  useEffect(() => {
+    console.log("check login");
+    checkLogin();
+  }, []);
+
   return (
-    <AdminHome>
+    <AdminPage>
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">DashBoard</h1>
       </div>
@@ -21,6 +37,6 @@ export default function Dashboard() {
           <Button className="mt-4">Add Product</Button>
         </div>
       </div>
-    </AdminHome>
+    </AdminPage>
   );
 }

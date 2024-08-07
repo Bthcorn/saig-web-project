@@ -7,10 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { MixIcon } from "@radix-ui/react-icons";
 import {
   Bell,
+  DoorOpen,
+  Gamepad2,
   Home,
   LineChart,
+  LucideTable,
   Package,
   Package2,
   ShoppingCart,
@@ -23,7 +27,10 @@ export const SideNav = () => {
   return (
     <div className="flex h-full max-h-screen flex-col gap-2">
       <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <NavLink to="/" className="flex items-center gap-2 font-semibold">
+        <NavLink
+          to="/admin/dashboard"
+          className="flex items-center gap-2 font-semibold"
+        >
           <Package2 className="h-6 w-6" />
           <span className="">Board Game</span>
         </NavLink>
@@ -35,7 +42,7 @@ export const SideNav = () => {
       <div className="flex-1">
         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
           <NavLink
-            to="/dashboard"
+            to="/admin/dashboard"
             className={({ isActive, isPending }) =>
               `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
                 isActive ? "bg-muted text-primary" : "text-muted-foreground "
@@ -46,8 +53,12 @@ export const SideNav = () => {
             Dashboard
           </NavLink>
           <NavLink
-            to="#"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+            to="/admin/orders"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
+                isActive ? "bg-muted text-primary" : "text-muted-foreground"
+              }`
+            }
           >
             <ShoppingCart className="h-4 w-4" />
             Orders
@@ -56,19 +67,34 @@ export const SideNav = () => {
             </Badge>
           </NavLink>
           <NavLink
-            to="/boardgame"
+            to="/admin/boardgame"
             className={({ isActive, isPending }) =>
               `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
                 isActive ? "bg-muted text-primary" : "text-muted-foreground"
               }`
             }
           >
-            <Package className="h-4 w-4" />
+            <Gamepad2 className="h-4 w-4" />
             Board Games{" "}
           </NavLink>
           <NavLink
-            to="#"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+            to="/admin/rooms"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
+                isActive ? "bg-muted text-primary" : "text-muted-foreground"
+              }`
+            }
+          >
+            <DoorOpen className="h-4 w-4" />
+            Rooms{" "}
+          </NavLink>
+          <NavLink
+            to="/admin/customers"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
+                isActive ? "bg-muted text-primary" : "text-muted-foreground"
+              }`
+            }
           >
             <Users className="h-4 w-4" />
             Customers
@@ -82,7 +108,7 @@ export const SideNav = () => {
           </NavLink>
         </nav>
       </div>
-      <div className="mt-auto p-4">
+      {/* <div className="mt-auto p-4">
         <Card x-chunk="dashboard-02-chunk-0">
           <CardHeader className="p-2 pt-0 md:p-4">
             <CardTitle>Upgrade to Pro</CardTitle>
@@ -96,7 +122,7 @@ export const SideNav = () => {
             </Button>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 };
