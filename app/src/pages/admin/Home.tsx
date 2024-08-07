@@ -1,9 +1,12 @@
-import React from 'react'
+import { AdminPage } from "@/components/admin/home";
+import React from "react";
 
-function Home(props: any) {
+function AdminHome() {
   return (
-    <div>{props.children}</div>
-  )
+    <AdminPage>
+      <h1>Home</h1>
+    </AdminPage>
+  );
 }
 
-export default Home
+export default AdminHome;
