@@ -50,4 +50,17 @@ app.post('/category/create', async (req, res) => {
     res.send(category);
 });
 
+app.get('/boardgame/:id', async (req, res) => {
+    try {
+        const boardGame = await prisma.boardGame.findUnique({
+            where: {
+                id: req.params.id,
+            },
+        });
+        res.send(boardGame);
+    } catch (error) {
+        res.status(404).send({ error: 'Board game not found' });
+    }
+});
+
 module.exports = app;

@@ -10,7 +10,7 @@ export const AdminPage = (props: any) => {
       </div>
       <div className="flex flex-col">
         <NavBar />
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="flex w-screen flex-1 flex-col gap-4 p-4 sm:w-auto lg:gap-6 lg:p-6">
           {props.children}
         </main>
       </div>
