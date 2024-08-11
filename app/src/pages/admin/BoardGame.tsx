@@ -62,7 +62,8 @@ export default function BoardGame() {
       <div className="flex flex-row items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Board Games</h1>
         <Button className="mt-4 gap-3">
-          <PlusCircle className="h-6 w-6" /> Add Board Game
+          <PlusCircle className="h-6 w-6" />
+          Board Game
         </Button>
       </div>
       <div
@@ -84,9 +85,9 @@ export default function BoardGame() {
                 </p>
                 </div> */}
         {/* <GameTable /> */}
-        {/* <div className="overflow-x-scroll"> */}
-        <DataTable columns={columns} data={data} />
-        {/* </div> */}
+        <div className="container mx-auto py-10">
+          <DataTable columns={columns} data={data} />
+        </div>
       </div>
     </AdminPage>
   );

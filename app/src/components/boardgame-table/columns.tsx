@@ -1,18 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { MoreHorizontal } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Badge } from "../ui/badge";
 import { DrawerDialogDemo } from "../boardgame-dialog";
+import React from "react";
+import { DataTableColumnHeader } from "./headers";
 
 export type BoardGameItem = {
   id: string;
@@ -25,7 +16,7 @@ export type BoardGameItem = {
   difficulty: number;
   price: number;
   status: "AVAILABLE" | "UNAVAILABLE";
-  categoryId: string;
+  boardGame_CategoryId: string;
 };
 
 export type BoardGameCategory = {
@@ -51,16 +42,25 @@ export const columns: ColumnDef<BoardGameItem>[] = [
     maxSize: 50,
   },
   {
-    header: "Name",
     accessorKey: "name",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Name" />;
+    },
   },
-  // {
-  //   header: "Description",
-  //   accessorKey: "description",
-  // },
   {
-    header: "Price",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Price" />;
+    },
     accessorKey: "price",
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("price"));
+      const formatted = new Intl.NumberFormat("th-TH", {
+        style: "currency",
+        currency: "THB",
+      }).format(amount);
+
+      return formatted;
+    },
   },
   {
     header: "Status",
@@ -77,14 +77,18 @@ export const columns: ColumnDef<BoardGameItem>[] = [
   },
   {
     header: "Category ID",
-    accessorKey: "categoryId",
+    accessorKey: "boardGame_CategoryId",
   },
   {
     id: "actions",
     cell: ({ row }) => {
       const boardgame = row.original;
 
-      return <DrawerDialogDemo {...boardgame} />;
+      return (
+        <div className="flex flex-1">
+          <DrawerDialogDemo {...boardgame} />
+        </div>
+      );
     },
   },
 ];
