@@ -36,7 +36,7 @@ export const NavBar = () => {
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+          <Button variant="outline" size="icon" className="shrink-0 lg:hidden">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
@@ -48,18 +48,24 @@ export const NavBar = () => {
               className="flex items-center gap-2 text-lg font-semibold"
             >
               <Package2 className="h-6 w-6" />
-              <span className="sr-only">Acme Inc</span>
+              <span className="sr-only">Board Game</span>
             </NavLink>
             <NavLink
-              to="#"
+              to="/admin/dashboard"
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
             >
               <Home className="h-5 w-5" />
               Dashboard
             </NavLink>
             <NavLink
-              to="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+              to="/admin/orders"
+              className={({ isActive, isPending }) =>
+                `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
+                  isActive
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground"
+                }`
+              }
             >
               <ShoppingCart className="h-5 w-5" />
               Orders
@@ -68,29 +74,47 @@ export const NavBar = () => {
               </Badge>
             </NavLink>
             <NavLink
-              to="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              to="/admin/boardgame"
+              className={({ isActive, isPending }) =>
+                `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
+                  isActive
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground"
+                }`
+              }
             >
               <Package className="h-5 w-5" />
-              Products
+              Board Games
             </NavLink>
             <NavLink
-              to="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              to="/admin/customers"
+              className={({ isActive, isPending }) =>
+                `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
+                  isActive
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground"
+                }`
+              }
             >
               <Users className="h-5 w-5" />
               Customers
             </NavLink>
             <NavLink
               to="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              className={({ isActive, isPending }) =>
+                `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
+                  isActive
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground"
+                }`
+              }
             >
               <LineChart className="h-5 w-5" />
               Analytics
             </NavLink>
           </nav>
           <div className="mt-auto">
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Upgrade to Pro</CardTitle>
                 <CardDescription>
@@ -103,7 +127,7 @@ export const NavBar = () => {
                   Upgrade
                 </Button>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </SheetContent>
       </Sheet>

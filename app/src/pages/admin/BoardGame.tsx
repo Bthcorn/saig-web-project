@@ -9,33 +9,32 @@ import { useEffect, useState } from "react";
 import { getBoardGames } from "@/components/boardgame-table/actions";
 import { DataTable } from "@/components/boardgame-table/data-table";
 import { BoardGameItem, columns } from "@/components/boardgame-table/columns";
+import { useLocation } from "react-router-dom";
+import { PlusCircle } from "lucide-react";
 
 export default function BoardGame() {
   const [products, setProducts] = useState([] as BoardGameProp[]);
   const [data, setData] = useState([] as BoardGameItem[]);
+
+  let location = useLocation();
   const getBoardGames = async (): Promise<BoardGameItem[]> => {
-    return [
-      {
-        id: "1",
-        name: "Catan",
-        description: "A game of trading and strategy",
-        image:
-          "https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&fit=crop&w=1080&q=80&fit=max",
-        minPlayers: 3,
-        maxPlayers: 4,
-        duration: 60,
-        difficulty: 2,
-        price: 49.99,
-        status: "available",
-        categoryId: "1",
-      },
-    ];
+    try {
+      const res = await axios.get(Config.apiPath + "/game/list");
+      console.log(res.data.result);
+      return res.data.result;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
   };
 
   useEffect(() => {
     getBoardGames().then((data) => {
       setData(data);
     });
+
+    loadProducts();
+    console.log(location);
   }, []);
 
   const fetchProducts = async (): Promise<BoardGameProp[]> => {
@@ -58,17 +57,17 @@ export default function BoardGame() {
     }
   };
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
   return (
     <AdminPage>
-      <div className="flex items-center">
+      <div className="flex flex-row items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Board Games</h1>
+        <Button className="mt-4 gap-3">
+          <PlusCircle className="h-6 w-6" />
+          Board Game
+        </Button>
       </div>
       <div
-        className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+        className="flex flex-1 justify-center rounded-lg border border-dashed shadow-sm"
         x-chunk="dashboard-02-chunk-1"
       >
         {/* <div className="flex flex-col items-center gap-1 text-center">
@@ -86,10 +85,9 @@ export default function BoardGame() {
                 </p>
                 </div> */}
         {/* <GameTable /> */}
-        <DataTable columns={columns} data={data} />
-      </div>
-      <div className="flex justify-end">
-        <Button className="mt-4">Add Board Game</Button>
+        <div className="container mx-auto py-10">
+          <DataTable columns={columns} data={data} />
+        </div>
       </div>
     </AdminPage>
   );

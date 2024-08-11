@@ -13,10 +13,12 @@ export async function Login(user: any, navigate: ReturnType<typeof useNavigate>)
       } else if (res.data.user.role === 'GUEST') {
         navigate('/home')
       } else {
-        navigate('/')
+        // navigate('/')
+        redirect('/')
       }
     } else {
-      navigate('/')
+      // navigate('/')
+      redirect('/')
     }
   } catch (error) {
     console.log(error);
