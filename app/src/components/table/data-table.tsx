@@ -23,15 +23,10 @@ import {
 import { Button } from "../ui/button";
 import React from "react";
 import { Input } from "../ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { ArrowLeft, ArrowRight, Filter } from "lucide-react";
 import { DataTablePagination } from "./pagination";
 import { DataTableViewOptions } from "./column-toggle";
+
+import { Cross2Icon } from "@radix-ui/react-icons";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -75,6 +70,8 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
+
+  const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
     <div>
@@ -139,6 +136,16 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      {isFiltered && (
+        <Button
+          variant="ghost"
+          onClick={() => table.resetColumnFilters()}
+          className="h-8 px-2 lg:px-3"
+        >
+          Reset
+          <Cross2Icon className="ml-2 h-4 w-4" />
+        </Button>
+      )}
       <div className="mt-auto flex items-center justify-center space-x-2 py-4 sm:justify-end">
         <DataTablePagination table={table} />
       </div>

@@ -4,6 +4,8 @@ import { Badge } from "../ui/badge";
 import { DrawerDialogDemo } from "../boardgame-dialog";
 import React from "react";
 import { DataTableColumnHeader } from "./headers";
+import GetCategory from "./category";
+import { Edit } from "lucide-react";
 
 export type BoardGameItem = {
   id: string;
@@ -23,6 +25,17 @@ export type BoardGameCategory = {
   id: string;
   name: string;
 };
+
+export async function fetchBoardGames(): Promise<BoardGameItem[]> {
+  try {
+    const response = await fetch("http://localhost:3001/game/boardgame/list");
+    const data = await response.json();
+    return data.result;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
 
 export const columns: ColumnDef<BoardGameItem>[] = [
   {
@@ -63,21 +76,32 @@ export const columns: ColumnDef<BoardGameItem>[] = [
     },
   },
   {
-    header: "Status",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Status" />;
+    },
     accessorKey: "status",
     cell: ({ row }) => {
       const boardgame = row.original;
 
       return boardgame.status === "AVAILABLE" ? (
-        <Badge variant={"default"}>{boardgame.status}</Badge>
+        <Badge variant={"default"} className="rounded-sm px-1">
+          {boardgame.status}
+        </Badge>
       ) : (
-        <Badge variant={"secondary"}>{boardgame.status}</Badge>
+        <Badge variant={"secondary"} className="rounded-sm px-1">
+          {boardgame.status}
+        </Badge>
       );
     },
   },
   {
-    header: "Category ID",
+    header: "Category",
     accessorKey: "boardGame_CategoryId",
+    cell: ({ row }) => {
+      const boardgame = row.original;
+
+      return <GetCategory id={boardgame.boardGame_CategoryId} />;
+    },
   },
   {
     id: "actions",
@@ -86,7 +110,11 @@ export const columns: ColumnDef<BoardGameItem>[] = [
 
       return (
         <div className="flex flex-1">
-          <DrawerDialogDemo {...boardgame} />
+          <DrawerDialogDemo
+            id={boardgame.id}
+            title="Edit"
+            iconprop={<Edit className="h-4 w-4" />}
+          />
         </div>
       );
     },

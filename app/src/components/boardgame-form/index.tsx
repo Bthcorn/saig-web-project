@@ -22,10 +22,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { BoardGameItem } from "../boardgame-table/columns";
+import { BoardGameCategory, BoardGameItem } from "../table/columns";
 import axios from "axios";
 import { Config } from "../config";
 import React from "react";
+import { ZAxis } from "recharts";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -45,13 +46,16 @@ const formSchema = z.object({
     message: "Price must be a positive number",
   }),
   status: z.enum(["AVAILABLE", "UNAVAILABLE"]),
+  boardGame_CategoryId: z.string().min(1, {
+    message: "Category must be selected",
+  }),
 });
 
 export default function BoardGameForm({
   id,
   className,
 }: {
-  id: string;
+  id?: string;
   className?: string;
 }) {
   const form = useForm<BoardGameItem>({
@@ -61,43 +65,79 @@ export default function BoardGameForm({
       description: "",
       image: "",
       status: "AVAILABLE",
+      minPlayers: 0,
+      maxPlayers: 0,
+      duration: 0,
+      difficulty: 0,
+      price: 0,
+      boardGame_CategoryId: "",
     },
-    reValidateMode: "onSubmit",
+    reValidateMode: "onChange",
   });
 
   const [boardGame, setBoardGame] = React.useState<BoardGameItem>();
+  const [categories, setCategories] = React.useState<BoardGameCategory[]>();
 
   async function fetchBoardGame(): Promise<BoardGameItem> {
     try {
-      const response = await axios.get(
-        "http://localhost:3001/game/boardgame/" + id,
-      );
-      console.log(response.data.result);
-      setBoardGame(response.data.result);
-      return response.data.result;
+      if (id === undefined) {
+        return form.getValues();
+      } else {
+        const response = await axios.get(
+          "http://localhost:3001/game/boardgame/" + id,
+        );
+        console.log(response.data.result);
+        setBoardGame(response.data.result);
+        return response.data.result;
+      }
     } catch (error) {
       console.error(error);
       return form.getValues();
     }
   }
 
+  async function fetchCategories(): Promise<BoardGameCategory[]> {
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/game/category/list",
+      );
+      setCategories(response.data.result);
+      console.log(response.data.result ?? "no data");
+      return response.data.result;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
   React.useEffect(() => {
-    console.log(boardGame);
+    // console.log(boardGame);
+    fetchCategories();
     fetchBoardGame().then((boardGame) => {
+      setBoardGame(boardGame);
       form.reset(boardGame);
     });
-  }, [id]);
+  }, []);
 
   async function OnSubmit() {
     try {
-      // setBoardGame(form.getValues());
-      const response = await axios.put(
-        "http://localhost:3001/game/boardgame/update/" + id,
-        form.getValues(),
-      );
-
-      fetchBoardGame();
-      console.log(response.data.result);
+      if (id === undefined) {
+        const response = await axios.post(
+          "http://localhost:3001/game/boardgame/create",
+          form.getValues(),
+        );
+        console.log(response.data.result);
+        fetchBoardGame();
+        return;
+      } else {
+        const response = await axios.put(
+          "http://localhost:3001/game/boardgame/update/" + id,
+          form.getValues(),
+        );
+        console.log(response.data.result);
+        fetchBoardGame();
+        return;
+      }
     } catch (error) {
       console.error(error);
     }
@@ -241,7 +281,10 @@ export default function BoardGameForm({
             <FormItem>
               <FormLabel>Status</FormLabel>
               <FormControl>
-                <Select {...field}>
+                <Select
+                  {...field}
+                  onValueChange={(value) => field.onChange(value)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Theme" />
                   </SelectTrigger>
@@ -255,6 +298,34 @@ export default function BoardGameForm({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="boardGame_CategoryId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+              <FormControl>
+                <Select
+                  {...field}
+                  onValueChange={(value) => field.onChange(value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories?.map((category, index) => (
+                      <SelectItem key={index} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit">Save changes</Button>
       </form>
     </Form>
