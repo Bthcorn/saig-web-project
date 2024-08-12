@@ -1,23 +1,16 @@
 import { AdminPage } from "@/components/admin/home";
 import { Config } from "@/components/config";
-import { BoardGameProp, GameCard } from "@/components/game-card";
-import { GameTable } from "@/components/table";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getBoardGames } from "@/components/table/actions";
 import { DataTable } from "@/components/table/data-table";
 import { BoardGameItem, columns } from "@/components/table/columns";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
 import { DrawerDialogDemo } from "@/components/boardgame-dialog";
 
 export default function BoardGame() {
-  const [products, setProducts] = useState([] as BoardGameProp[]);
-  const [data, setData] = useState([] as BoardGameItem[]);
+  const [data, setData] = useState<BoardGameItem[]>([]);
 
-  let location = useLocation();
   const getBoardGames = async (): Promise<BoardGameItem[]> => {
     try {
       const res = await axios.get(Config.apiPath + "/game/boardgame/list");
@@ -33,30 +26,8 @@ export default function BoardGame() {
     getBoardGames().then((data) => {
       setData(data);
     });
-
-    loadProducts();
     // console.log(location);
   }, []);
-
-  const fetchProducts = async (): Promise<BoardGameProp[]> => {
-    try {
-      const res = await axios.get(Config.apiPath + "/game/boardgame/list");
-      return res.data.result;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
-
-  const loadProducts = async () => {
-    try {
-      const games = await fetchProducts();
-      setProducts(games);
-      // console.log(games);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <AdminPage>

@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center gap-2 py-4">
         <Input
           placeholder="Filter name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -84,6 +84,16 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        {isFiltered && (
+          <Button
+            variant="ghost"
+            onClick={() => table.resetColumnFilters()}
+            className="h-8 px-2 lg:px-3"
+          >
+            Reset
+            <Cross2Icon className="ml-2 h-4 w-4" />
+          </Button>
+        )}
         <DataTableViewOptions table={table} />
       </div>
       <div className="w-full rounded-md border">
@@ -136,16 +146,6 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {isFiltered && (
-        <Button
-          variant="ghost"
-          onClick={() => table.resetColumnFilters()}
-          className="h-8 px-2 lg:px-3"
-        >
-          Reset
-          <Cross2Icon className="ml-2 h-4 w-4" />
-        </Button>
-      )}
       <div className="mt-auto flex items-center justify-center space-x-2 py-4 sm:justify-end">
         <DataTablePagination table={table} />
       </div>

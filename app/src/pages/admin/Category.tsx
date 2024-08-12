@@ -1,18 +1,21 @@
 import { AdminPage } from "@/components/admin/home";
+import { DrawerDialogDemo } from "@/components/boardgame-dialog";
+import { CategoryDrawerDialog } from "@/components/category-dialog";
+import { categorycolumns } from "@/components/table/category-columns";
+import { BoardGameCategory } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
+import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import React from "react";
 
-import { Room, roomcolumns } from "@/components/table/room-columns";
-import axios from "axios";
-import { RoomDrawerDialog } from "@/components/room-dialog";
+export default function Category() {
+  const [data, setData] = React.useState<BoardGameCategory[]>([]);
 
-export default function Rooms() {
-  const [data, setData] = React.useState<Room[]>([]);
-
-  async function getRoom(): Promise<Room[]> {
+  async function getBoardGameCategories(): Promise<BoardGameCategory[]> {
     try {
-      const response = await axios.get("http://localhost:3001/room/list");
+      const response = await axios.get(
+        "http://localhost:3001/game/category/list",
+      );
       console.log(response.data.result);
       setData(response.data.result);
       return response.data.result;
@@ -23,17 +26,20 @@ export default function Rooms() {
   }
 
   React.useEffect(() => {
-    getRoom();
+    getBoardGameCategories();
   }, []);
+
   return (
     <AdminPage>
       <div className="flex flex-row items-center justify-between">
-        <h1 className="text-lg font-semibold md:text-2xl">Rooms</h1>
+        <h1 className="text-lg font-semibold md:text-2xl">
+          Board Games Categories
+        </h1>
         {/* <Button className="mt-4 gap-3">
-          <PlusCircle className="h-6 w-6" />
-          Board Game
-        </Button> */}
-        <RoomDrawerDialog
+        <PlusCircle className="h-6 w-6" />
+        Board Game
+      </Button> */}
+        <CategoryDrawerDialog
           title="Add Board Game"
           iconprop={<PlusCircle className="h-6 w-6" />}
         />
@@ -43,7 +49,7 @@ export default function Rooms() {
         x-chunk="dashboard-02-chunk-1"
       >
         <div className="container mx-auto py-10">
-          <DataTable columns={roomcolumns} data={data} />
+          <DataTable columns={categorycolumns} data={data} />
         </div>
       </div>
     </AdminPage>

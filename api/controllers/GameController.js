@@ -84,6 +84,35 @@ app.get('/boardgame/:id', async (req, res) => {
     }
 });
 
+app.get('/category/:id', async (req, res) => {
+    try {
+        const category = await prisma.boardGame_Category.findFirst({
+            where: {
+                id: req.params.id,
+            },
+        });
+        res.send({ result: category });
+    } catch (error) {
+        res.status(404).send({ error: 'Category not found' });
+    }
+});
+
+app.put('/category/update/:id', async (req, res) => {
+    try {
+        const category = await prisma.boardGame_Category.update({
+            where: {
+                id: req.params.id,
+            },
+            data: {
+                name: req.body.name,
+            },
+        });
+        res.send({ result: category, message: 'Category updated' });
+    } catch (error) {
+        res.status(404).send({ error: error.message });
+    }
+});
+
 app.put('/boardgame/update/:id', async (req, res) => {
     try {
         const boardGame = await prisma.boardGame.update({
@@ -107,7 +136,7 @@ app.put('/boardgame/update/:id', async (req, res) => {
                 },
             },
         });
-        res.send({ result: boardGame });
+        res.send({ result: boardGame, message: 'Game updated' });
     } catch (error) {
         res.status(404).send({ error: error.message });
     }
