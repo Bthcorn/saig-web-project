@@ -30,8 +30,9 @@ import { BoardGameItem } from "../table/columns";
 import { Edit } from "lucide-react";
 import BoardGameForm from "../boardgame-form";
 import { ScrollArea } from "../ui/scroll-area";
+import CategoryForm from "../category-form";
 
-export function DrawerDialogDemo({
+export function CategoryDrawerDialog({
   id,
   title,
   iconprop,
@@ -53,11 +54,11 @@ export function DrawerDialogDemo({
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>Edit</DialogTitle>
           </DialogHeader>
-          <ScrollArea className="h-60">
-            <BoardGameForm className="p-2" id={id} />
-          </ScrollArea>
+          {/* <ScrollArea className="h-60"> */}
+          <CategoryForm className="p-2" id={id} />
+          {/* </ScrollArea> */}
         </DialogContent>
       </Dialog>
     );
@@ -72,11 +73,11 @@ export function DrawerDialogDemo({
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>{title}</DrawerTitle>
+          <DrawerTitle>Edit</DrawerTitle>
         </DrawerHeader>
-        <ScrollArea className="h-72">
-          <BoardGameForm className="px-4" id={id} />
-        </ScrollArea>
+        {/* <ScrollArea className="h-80"> */}
+        <CategoryForm className="px-4" id={id} />
+        {/* </ScrollArea> */}
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>

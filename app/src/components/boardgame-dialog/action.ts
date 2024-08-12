@@ -1,10 +1,10 @@
 import axios from "axios";
 import { Config } from "../config";
-import { BoardGameItem } from "../boardgame-table/columns";
+import { BoardGameItem } from "../table/columns";
 
 
 export async function loadBoardGames(id: string): Promise<BoardGameItem> {
-  const response = await axios(Config.apiPath + /boardgame/ + id);
+  const response = await axios.get(Config.apiPath + /boardgame/ + id);
   return response.data.result;
 }
 

@@ -13,6 +13,7 @@ import {
   DoorOpen,
   Gamepad2,
   Home,
+  LayoutList,
   LineChart,
   LucideTable,
   Package,
@@ -78,6 +79,13 @@ export const SideNav = () => {
             Board Games{" "}
           </NavLink>
           <NavLink
+            to="/admin/category"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+          >
+            <LayoutList className="h-4 w-4" />
+            Categories
+          </NavLink>
+          <NavLink
             to="/admin/rooms"
             className={({ isActive, isPending }) =>
               `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
@@ -98,13 +106,6 @@ export const SideNav = () => {
           >
             <Users className="h-4 w-4" />
             Customers
-          </NavLink>
-          <NavLink
-            to="#"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-          >
-            <LineChart className="h-4 w-4" />
-            Analytics
           </NavLink>
         </nav>
       </div>

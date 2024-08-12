@@ -8,21 +8,30 @@ const { stat } = require('fs');
 
 dotenv.config();
 
-app.get('/list', async (req, res) => {
-    const result = await prisma.boardGame.findMany({});
-    res.send({ result: result });
+app.get('/boardgame/list', async (req, res) => {
+    try {
+        const boardGames = await prisma.boardGame.findMany({
+            include: {
+                BoardGame_Category: true,
+            },
+        });
+        res.send({ result: boardGames });
+    } catch (error) {
+        res.status(404).send({ error: error.message });
+    }
 });
 
 app.get('/category/list', async (req, res) => {
-    const categories = await prisma.boardGame_Category.findMany({
-        include: {
-            boardGames: true,
-        },
-    });
-    res.send(categories);
+    try {
+        const categories = await prisma.boardGame_Category.findMany({});
+        res.send({ result: categories });
+    }
+    catch (error) {
+        res.status(404).send({ error: error.message });
+    }
 });
 
-app.post('/create', async (req, res) => {
+app.post('/boardgame/create', async (req, res) => {
     try {
         const game = await prisma.boardGame.create({
             data: {
@@ -37,26 +46,29 @@ app.post('/create', async (req, res) => {
                 status: req.body.status,
                 BoardGame_Category: {
                     connect: {
-                        id: req.body.boardGame_CategoryId,
+                        id: req.body.boardGame_CategoryId ?? "66b908ea4fbe78d6b2e2f66a", // Default None Category
                     },
                 },
             },
 
         });
-        res.send(game);
+        res.send({ message: 'Game created', result: game });
     } catch (error) {
         res.status(400).send({ error: error.message });
     }
 });
 
 app.post('/category/create', async (req, res) => {
-    const category = await prisma.boardGame_Category.create({
-        data: {
-            name: req.body.name,
-        },
-    });
-
-    res.send(category);
+    try {
+        const category = await prisma.boardGame_Category.create({
+            data: {
+                name: req.body.name,
+            },
+        });
+        res.send({ result: category });
+    } catch (error) {
+        res.status(404).send({ error: error.message });
+    }
 });
 
 app.get('/boardgame/:id', async (req, res) => {
@@ -69,6 +81,35 @@ app.get('/boardgame/:id', async (req, res) => {
         res.send({ result: boardGame });
     } catch (error) {
         res.status(404).send({ error: 'Board game not found' });
+    }
+});
+
+app.get('/category/:id', async (req, res) => {
+    try {
+        const category = await prisma.boardGame_Category.findFirst({
+            where: {
+                id: req.params.id,
+            },
+        });
+        res.send({ result: category });
+    } catch (error) {
+        res.status(404).send({ error: 'Category not found' });
+    }
+});
+
+app.put('/category/update/:id', async (req, res) => {
+    try {
+        const category = await prisma.boardGame_Category.update({
+            where: {
+                id: req.params.id,
+            },
+            data: {
+                name: req.body.name,
+            },
+        });
+        res.send({ result: category, message: 'Category updated' });
+    } catch (error) {
+        res.status(404).send({ error: error.message });
     }
 });
 
@@ -90,12 +131,12 @@ app.put('/boardgame/update/:id', async (req, res) => {
                 status: req.body.status,
                 BoardGame_Category: {
                     connect: {
-                        id: req.body.boardGame_CategoryId,
+                        id: req.body.boardGame_CategoryId ?? "66b908ea4fbe78d6b2e2f66a",
                     },
                 },
             },
         });
-        res.send({ result: boardGame });
+        res.send({ result: boardGame, message: 'Game updated' });
     } catch (error) {
         res.status(404).send({ error: error.message });
     }

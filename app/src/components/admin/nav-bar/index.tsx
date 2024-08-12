@@ -27,6 +27,7 @@ import {
   LineChart,
   Search,
   CircleUser,
+  LayoutList,
 } from "lucide-react";
 import React from "react";
 import { NavLink } from "react-router-dom";
@@ -87,6 +88,19 @@ export const NavBar = () => {
               Board Games
             </NavLink>
             <NavLink
+              to="/admin/category"
+              className={({ isActive, isPending }) =>
+                `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
+                  isActive
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground"
+                }`
+              }
+            >
+              <LayoutList className="h-5 w-5" />
+              Categories
+            </NavLink>
+            <NavLink
               to="/admin/customers"
               className={({ isActive, isPending }) =>
                 `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
@@ -98,19 +112,6 @@ export const NavBar = () => {
             >
               <Users className="h-5 w-5" />
               Customers
-            </NavLink>
-            <NavLink
-              to="#"
-              className={({ isActive, isPending }) =>
-                `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
-                  isActive
-                    ? "bg-muted text-foreground"
-                    : "text-muted-foreground"
-                }`
-              }
-            >
-              <LineChart className="h-5 w-5" />
-              Analytics
             </NavLink>
           </nav>
           <div className="mt-auto">

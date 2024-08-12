@@ -1,5 +1,4 @@
 import React from "react";
-import { BoardGameProp } from "../game-card";
 import {
   Table,
   TableBody,

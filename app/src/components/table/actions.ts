@@ -12,5 +12,18 @@ export async function getBoardGames(): Promise<BoardGameItem[]> {
   }
 }
 
+// timeout for window reload
+export function windowReload() {
+  setTimeout(() => {
+    window.location.reload();
+  }, 3000);
+}
+
+// set timeout dalayfunction for 2000ms
+export function delay() {
+  return new Promise((resolve) => setTimeout(resolve, 2000));
+}
+
+
 
 

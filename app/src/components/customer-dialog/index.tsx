@@ -30,8 +30,9 @@ import { BoardGameItem } from "../table/columns";
 import { Edit } from "lucide-react";
 import BoardGameForm from "../boardgame-form";
 import { ScrollArea } from "../ui/scroll-area";
+import RoomForm from "../room-form";
 
-export function DrawerDialogDemo({
+export function CustomerDrawerDialog({
   id,
   title,
   iconprop,
@@ -56,7 +57,7 @@ export function DrawerDialogDemo({
             <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
           <ScrollArea className="h-60">
-            <BoardGameForm className="p-2" id={id} />
+            <RoomForm className="p-2" id={id} />
           </ScrollArea>
         </DialogContent>
       </Dialog>
@@ -75,7 +76,7 @@ export function DrawerDialogDemo({
           <DrawerTitle>{title}</DrawerTitle>
         </DrawerHeader>
         <ScrollArea className="h-72">
-          <BoardGameForm className="px-4" id={id} />
+          <RoomForm className="px-4" id={id} />
         </ScrollArea>
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>

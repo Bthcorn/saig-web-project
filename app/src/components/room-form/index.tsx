@@ -24,10 +24,9 @@ import {
 } from "../ui/select";
 import { BoardGameCategory, BoardGameItem } from "../table/columns";
 import axios from "axios";
-import { Config } from "../config";
-import React from "react";
-import { ZAxis } from "recharts";
+import React, { useEffect } from "react";
 import { toast } from "../ui/use-toast";
+import { Room } from "../table/room-columns";
 import { windowReload } from "../table/actions";
 
 const formSchema = z.object({
@@ -35,61 +34,49 @@ const formSchema = z.object({
     message: "Name must be at least 2 characters",
   }),
   description: z.string(),
-  image: z.string(),
-  minPlayers: z.number().int().nonnegative({
-    message: "Minimum players must be a positive integer",
+  table: z.number().int().nonnegative({
+    message: "Table must be a positive integer",
   }),
-  maxPlayers: z.number().int().nonnegative({
-    message: "Maximum players must be a positive number",
-  }),
-  duration: z.number(),
-  difficulty: z.number(),
   price: z.number().nonnegative({
     message: "Price must be a positive number",
   }),
-  status: z.enum(["AVAILABLE", "UNAVAILABLE"]),
-  boardGame_CategoryId: z.string().min(1, {
-    message: "Category must be selected",
+  capacity: z.number().int().nonnegative({
+    message: "Capacity must be a positive integer",
   }),
+  status: z.enum(["AVAILABLE", "UNAVAILABLE"]),
 });
 
-export default function BoardGameForm({
+export default function RoomForm({
   id,
   className,
 }: {
   id?: string;
   className?: string;
 }) {
-  const form = useForm<BoardGameItem>({
+  const form = useForm<Room>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
       image: "",
       status: "AVAILABLE",
-      minPlayers: 0,
-      maxPlayers: 0,
-      duration: 0,
-      difficulty: 0,
+      table: 0,
+      capacity: 0,
       price: 0,
-      boardGame_CategoryId: "",
     },
     reValidateMode: "onChange",
   });
 
-  const [boardGame, setBoardGame] = React.useState<BoardGameItem>();
-  const [categories, setCategories] = React.useState<BoardGameCategory[]>();
+  const [room, setRoom] = React.useState<Room>();
 
-  async function fetchBoardGame(): Promise<BoardGameItem> {
+  async function fetchRoom(): Promise<Room> {
     try {
       if (id === undefined) {
         return form.getValues();
       } else {
-        const response = await axios.get(
-          "http://localhost:3001/game/boardgame/" + id,
-        );
+        const response = await axios.get("http://localhost:3001/room/" + id);
         console.log(response.data.result);
-        setBoardGame(response.data.result);
+        setRoom(response.data.result);
         return response.data.result;
       }
     } catch (error) {
@@ -98,26 +85,10 @@ export default function BoardGameForm({
     }
   }
 
-  async function fetchCategories(): Promise<BoardGameCategory[]> {
-    try {
-      const response = await axios.get(
-        "http://localhost:3001/game/category/list",
-      );
-      setCategories(response.data.result);
-      console.log(response.data.result ?? "no data");
-      return response.data.result;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  }
-
   React.useEffect(() => {
     // console.log(boardGame);
-    fetchCategories();
-    fetchBoardGame().then((boardGame) => {
-      setBoardGame(boardGame);
-      form.reset(boardGame);
+    fetchRoom().then((room) => {
+      form.reset(room);
     });
   }, []);
 
@@ -125,19 +96,20 @@ export default function BoardGameForm({
     try {
       if (id === undefined) {
         const response = await axios.post(
-          "http://localhost:3001/game/boardgame/create",
+          "http://localhost:3001/room/create",
           form.getValues(),
         );
+        // setRes(response.data);
         await handleResponse(response);
-        fetchBoardGame();
+        fetchRoom();
       } else {
         const response = await axios.put(
-          "http://localhost:3001/game/boardgame/update/" + id,
+          "http://localhost:3001/room/update/" + id,
           form.getValues(),
         );
-        // console.log(response.data.result);
+        console.log(response.data.result);
         await handleResponse(response);
-        fetchBoardGame();
+        fetchRoom();
       }
       windowReload();
     } catch (error) {
@@ -172,7 +144,7 @@ export default function BoardGameForm({
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="board game name" {...field} />
+                <Input placeholder="room name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -185,7 +157,7 @@ export default function BoardGameForm({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="board game description" {...field} />
+                <Textarea placeholder="room description" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -198,7 +170,7 @@ export default function BoardGameForm({
             <FormItem>
               <FormLabel>Image</FormLabel>
               <FormControl>
-                <Input placeholder="board game image" {...field} />
+                <Input placeholder="room image" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -206,28 +178,10 @@ export default function BoardGameForm({
         />
         <FormField
           control={form.control}
-          name="minPlayers"
+          name="table"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Minimum Players</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  placeholder="1"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="maxPlayers"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Maximum Players</FormLabel>
+              <FormLabel>Table</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -241,27 +195,10 @@ export default function BoardGameForm({
         />
         <FormField
           control={form.control}
-          name="duration"
+          name="capacity"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="difficulty"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Difficulty</FormLabel>
+              <FormLabel>Capacity</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -314,34 +251,6 @@ export default function BoardGameForm({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="boardGame_CategoryId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category</FormLabel>
-              <FormControl>
-                <Select
-                  {...field}
-                  onValueChange={(value) => field.onChange(value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories?.map((category, index) => (
-                      <SelectItem key={index} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <Button type="submit">Submit</Button>
       </form>
     </Form>

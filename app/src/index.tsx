@@ -11,6 +11,8 @@ import BoardGame from "./pages/admin/BoardGame";
 import Customers from "./pages/admin/Customers";
 import Orders from "./pages/admin/Orders";
 import Rooms from "./pages/admin/Rooms";
+import Category from "./pages/admin/Category";
+import { Toaster } from "./components/ui/toaster";
 
 const Router = createBrowserRouter([
   {
@@ -41,6 +43,10 @@ const Router = createBrowserRouter([
         path: "rooms",
         element: <Rooms />,
       },
+      {
+        path: "category",
+        element: <Category />,
+      },
     ],
   },
   {
@@ -50,12 +56,13 @@ const Router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 root.render(
   <React.StrictMode>
     <RouterProvider router={Router} />
-  </React.StrictMode>
+    <Toaster />
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
