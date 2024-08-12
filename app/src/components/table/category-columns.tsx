@@ -3,6 +3,7 @@ import { BoardGameCategory } from "./columns";
 import { DataTableColumnHeader } from "./headers";
 import { CategoryDrawerDialog } from "../category-dialog";
 import { Edit } from "lucide-react";
+import { Badge } from "../ui/badge";
 
 export const categorycolumns: ColumnDef<BoardGameCategory>[] = [
   {
@@ -14,6 +15,23 @@ export const categorycolumns: ColumnDef<BoardGameCategory>[] = [
     accessorKey: "name",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Name" />;
+    },
+  },
+  {
+    header: "Status",
+    accessorKey: "status",
+    cell: ({ row }) => {
+      const category = row.original;
+
+      return category.status === "ACTIVE" ? (
+        <Badge variant={"default"} className="rounded-sm px-1">
+          {category.status}
+        </Badge>
+      ) : (
+        <Badge variant={"secondary"} className="rounded-sm px-1">
+          {category.status}
+        </Badge>
+      );
     },
   },
   {

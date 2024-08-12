@@ -120,9 +120,9 @@ export default function RoomForm({
   function handleResponse(response: any) {
     // setRes(response.data);
     toast({
-      title: response.data.message,
+      title: response.data.message + "!",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-secondary p-4">
+        <pre className="mt-2 rounded-md bg-secondary p-4">
           <code className="text-black">
             {JSON.stringify(response.data.result, null, 2)}
           </code>

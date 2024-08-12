@@ -33,7 +33,7 @@ export default function Category() {
     <AdminPage>
       <div className="flex flex-row items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">
-          Board Games Categories
+          Board Game Categories
         </h1>
         {/* <Button className="mt-4 gap-3">
         <PlusCircle className="h-6 w-6" />

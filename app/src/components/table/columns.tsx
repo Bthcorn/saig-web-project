@@ -24,6 +24,7 @@ export type BoardGameItem = {
 export type BoardGameCategory = {
   id: string;
   name: string;
+  status: "ACTIVE" | "INACTIVE";
 };
 
 export async function fetchBoardGames(): Promise<BoardGameItem[]> {

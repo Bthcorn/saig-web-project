@@ -7,13 +7,19 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-app.get('/', async (req, res) => {
-    const users = await prisma.user.findMany({
-        include: {
-            Post: true,
-        },
-    });
-    res.send(users);
+app.get('/list', async (req, res) => {
+    try {
+        const users = await prisma.user.findMany({
+            where: {
+                // status: 'ACTIVE',
+                role: 'GUEST',
+            },
+        });
+        res.send({ result: users });
+    }
+    catch (error) {
+        res.status(404).send({ error: error.message });
+    }
 });
 
 app.post('/create', async (req, res) => {
