@@ -27,9 +27,10 @@ export const NavBar = () => {
           <Package2 className="h-6 w-6" />
           <span className="sr-only">Acme Inc</span>
         </NavLink>
-        {pathname.map((path) => {
+        {pathname.map((path, index) => {
           return (
             <NavLink
+              id={index.toString() + "Nav"}
               to={path.path}
               className={({ isActive, isPending }) =>
                 `transition-colors hover:text-foreground ${
@@ -61,7 +62,7 @@ export const NavBar = () => {
             {pathname.map((path, index) => {
               return (
                 <NavLink
-                  id={index.toString()}
+                  id={index.toString() + "SideNav"}
                   to={path.path}
                   className={({ isActive, isPending }) =>
                     `transition-colors hover:text-foreground ${

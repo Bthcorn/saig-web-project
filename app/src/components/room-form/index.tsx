@@ -260,7 +260,14 @@ export default function RoomForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          onClick={() => {
+            console.log("Clicked");
+          }}
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   );
