@@ -29,6 +29,11 @@ export const roomcolumns: ColumnDef<Room>[] = [
     ),
   },
   {
+    header: "ID",
+    accessorKey: "id",
+    maxSize: 50,
+  },
+  {
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Name" />;
     },
