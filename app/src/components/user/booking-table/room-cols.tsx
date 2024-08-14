@@ -1,9 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "../ui/badge";
 import React from "react";
-import { DataTableColumnHeader } from "./headers";
-import { RoomDrawerDialog } from "../room-dialog";
 import { Edit } from "lucide-react";
+import { DataTableColumnHeader } from "@/components/table/headers";
+import { Badge } from "@/components/ui/badge";
+import { RoomDrawerDialog } from "@/components/room-dialog";
 
 export type Room = {
   id: string;
@@ -16,33 +16,33 @@ export type Room = {
   status: "AVAILABLE" | "UNAVAILABLE" | "PENDING" | "CANCELLED" | "BOOKED";
 };
 
-export const roomcolumns: ColumnDef<Room>[] = [
-  {
-    header: "Image",
-    accessorKey: "image",
-    cell: ({ row }) => (
-      <img
-        src="https://via.placeholder.com/150"
-        alt={row.original.name}
-        className="h-16 w-16 rounded-md object-cover"
-      />
-    ),
-  },
-  {
-    header: "ID",
-    accessorKey: "id",
-    maxSize: 50,
-  },
+export const roombookingcols: ColumnDef<Room>[] = [
+  // {
+  //   header: "Image",
+  //   accessorKey: "image",
+  //   cell: ({ row }) => (
+  //     <img
+  //       src={row.original.image}
+  //       alt={row.original.name}
+  //       className="h-16 w-16 rounded-md object-cover"
+  //     />
+  //   ),
+  // },
+  // {
+  //   header: "ID",
+  //   accessorKey: "id",
+  //   maxSize: 50,
+  // },
   {
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Name" />;
     },
     accessorKey: "name",
   },
-  {
-    header: "Description",
-    accessorKey: "description",
-  },
+  // {
+  //   header: "Description",
+  //   accessorKey: "description",
+  // },
   {
     header: "Table",
     accessorKey: "table",

@@ -43,7 +43,13 @@ const formSchema = z.object({
   capacity: z.number().int().nonnegative({
     message: "Capacity must be a positive integer",
   }),
-  status: z.enum(["AVAILABLE", "UNAVAILABLE"]),
+  status: z.enum([
+    "AVAILABLE",
+    "UNAVAILABLE",
+    "PENDING",
+    "CANCELLED",
+    "BOOKED",
+  ]),
 });
 
 export default function RoomForm({
@@ -244,6 +250,9 @@ export default function RoomForm({
                   <SelectContent>
                     <SelectItem value="AVAILABLE">Available</SelectItem>
                     <SelectItem value="UNAVAILABLE">Unavailable</SelectItem>
+                    <SelectItem value="PENDING">Pending</SelectItem>
+                    <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                    <SelectItem value="BOOKED">Booked</SelectItem>
                   </SelectContent>
                 </Select>
               </FormControl>

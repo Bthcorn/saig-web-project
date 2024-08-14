@@ -11,9 +11,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Logout } from "@/components/login-form/action";
+import { Logout, User } from "@/components/login-form/action";
+import React from "react";
 
-export const NavBar = ({ user }: { user?: any }) => {
+export const NavBar = () => {
   const navigate = useNavigate();
 
   return (
@@ -57,9 +58,10 @@ export const NavBar = ({ user }: { user?: any }) => {
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Acme Inc</span>
             </NavLink>
-            {pathname.map((path) => {
+            {pathname.map((path, index) => {
               return (
                 <NavLink
+                  id={index.toString()}
                   to={path.path}
                   className={({ isActive, isPending }) =>
                     `transition-colors hover:text-foreground ${
@@ -84,8 +86,8 @@ export const NavBar = ({ user }: { user?: any }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuItem>{user?.id ?? "None"}</DropdownMenuItem>
-            <DropdownMenuItem>{user?.name ?? "None"}</DropdownMenuItem>
+            {/* <DropdownMenuItem>{user.id ?? "None"}</DropdownMenuItem> */}
+            {/* <DropdownMenuItem>{user.username ?? "None"}</DropdownMenuItem> */}
 
             <DropdownMenuSeparator />
             <DropdownMenuItem

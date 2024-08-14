@@ -75,3 +75,30 @@ export async function checkAdmin(navigate: ReturnType<typeof useNavigate>) {
     navigate('/')
   }
 }
+
+export type User = {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+}
+
+export async function getUserInfo(): Promise<User> {
+  const token = localStorage.getItem('token')
+  try {
+    const res = await axios.get("http://localhost:3001/user/info", {
+      headers: {
+        'Authorization': token
+      }
+    })
+    return res.data
+  } catch (error) {
+    console.log(error);
+    return {
+      id: '',
+      username: '',
+      email: '',
+      role: ''
+    }
+  }
+}

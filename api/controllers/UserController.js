@@ -81,4 +81,26 @@ app.get('/admin/check', async (req, res) => {
     }
 });
 
+app.get('/info', async (req, res) => {
+    try {
+        const token = req.headers.authorization;
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+        const user = await prisma.user.findUnique({
+            where: {
+                id: decoded.id,
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                username: true,
+                role: true,
+            },
+        });
+        res.send({ user: user });
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
 module.exports = app;

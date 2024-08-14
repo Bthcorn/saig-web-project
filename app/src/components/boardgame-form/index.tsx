@@ -47,7 +47,13 @@ const formSchema = z.object({
   price: z.number().nonnegative({
     message: "Price must be a positive number",
   }),
-  status: z.enum(["AVAILABLE", "UNAVAILABLE"]),
+  status: z.enum([
+    "AVAILABLE",
+    "UNAVAILABLE",
+    "PENDING",
+    "CANCELLED",
+    "BOOKED",
+  ]),
   boardGame_CategoryId: z.string().min(1, {
     message: "Category must be selected",
   }),
@@ -307,6 +313,9 @@ export default function BoardGameForm({
                   <SelectContent>
                     <SelectItem value="AVAILABLE">Available</SelectItem>
                     <SelectItem value="UNAVAILABLE">Unavailable</SelectItem>
+                    <SelectItem value="PENDING">Pending</SelectItem>
+                    <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                    <SelectItem value="BOOKED">Booked</SelectItem>
                   </SelectContent>
                 </Select>
               </FormControl>
