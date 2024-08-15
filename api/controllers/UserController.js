@@ -67,4 +67,40 @@ app.post('/signin', async (req, res) => {
     }
 });
 
+app.get('/admin/check', async (req, res) => {
+    try {
+        const token = req.headers.authorization;
+        console.log(token);
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+        if (decoded.role === 'ADMIN') {
+            return res.send({ message: 'Authorized' });
+        }
+        res.status(401).send({ error: 'Unauthorized' });
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
+app.get('/info', async (req, res) => {
+    try {
+        const token = req.headers['authorization'];
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+        const user = await prisma.user.findUnique({
+            where: {
+                id: decoded.id,
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                username: true,
+                role: true,
+            },
+        });
+        res.send({ user: user });
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
 module.exports = app;

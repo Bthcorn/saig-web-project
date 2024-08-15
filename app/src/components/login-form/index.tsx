@@ -30,6 +30,7 @@ export function ProfileForm() {
     resolver: zodResolver(formSchema),
   });
 }
+
 export function LoginForm() {
   const navigate = useNavigate();
   const [user, setUser] = React.useState({});

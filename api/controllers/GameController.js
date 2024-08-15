@@ -21,6 +21,24 @@ app.get('/boardgame/list', async (req, res) => {
     }
 });
 
+app.get('/boardgame/list10', async (req, res) => {
+    try {
+        const boardGames = await prisma.boardGame.findMany({
+            take: 10,
+            include: {
+                BoardGame_Category: true,
+            },
+            // orderBy: {
+            // }
+        });
+        res.send({ result: boardGames });
+    } catch (error) {
+        res.status(404).send({ error: error.message });
+    }
+});
+
+app.get('/boardgame/list/:category', async (req, res) => { });
+
 app.get('/category/list', async (req, res) => {
     try {
         const categories = await prisma.boardGame_Category.findMany({});

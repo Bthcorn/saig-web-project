@@ -1,31 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Badge } from "../ui/badge";
-import { DrawerDialogDemo } from "../boardgame-dialog";
+import { Badge } from "@/components/ui/badge";
 import React from "react";
-import { DataTableColumnHeader } from "./headers";
-import GetCategory from "./category";
 import { Edit } from "lucide-react";
-
-export type BoardGameItem = {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  minPlayers: number;
-  maxPlayers: number;
-  duration: number;
-  difficulty: number;
-  price: number;
-  status: "AVAILABLE" | "UNAVAILABLE" | "PENDING" | "CANCELLED" | "BOOKED";
-  boardGame_CategoryId: string;
-};
-
-export type BoardGameCategory = {
-  id: string;
-  name: string;
-  status: "ACTIVE" | "INACTIVE";
-};
+import { BoardGameItem } from "@/components/table/columns";
+import { DataTableColumnHeader } from "@/components/table/headers";
+import GetCategory from "@/components/table/category";
+import { DrawerDialogDemo } from "@/components/boardgame-dialog";
 
 export async function fetchBoardGames(): Promise<BoardGameItem[]> {
   try {
@@ -38,24 +19,7 @@ export async function fetchBoardGames(): Promise<BoardGameItem[]> {
   }
 }
 
-export const columns: ColumnDef<BoardGameItem>[] = [
-  {
-    header: "Image",
-    accessorKey: "image",
-    cell: ({ row }) => (
-      <img
-        // placeholder image
-        src="https://via.placeholder.com/150"
-        alt={row.original.name}
-        className="h-16 w-16 rounded-md object-cover"
-      />
-    ),
-  },
-  {
-    header: "ID",
-    accessorKey: "id",
-    maxSize: 50,
-  },
+export const gamebookingcols: ColumnDef<BoardGameItem>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -106,7 +70,7 @@ export const columns: ColumnDef<BoardGameItem>[] = [
     },
   },
   {
-    id: "actions",
+    header: "Actions",
     cell: ({ row }) => {
       const boardgame = row.original;
 

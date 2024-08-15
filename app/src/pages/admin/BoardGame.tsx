@@ -7,8 +7,11 @@ import { BoardGameItem, columns } from "@/components/table/columns";
 // import { useLocation } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
 import { DrawerDialogDemo } from "@/components/boardgame-dialog";
+import { checkAdmin } from "@/components/login-form/action";
+import { useNavigate } from "react-router-dom";
 
 export default function BoardGame() {
+  const navigate = useNavigate();
   const [data, setData] = useState<BoardGameItem[]>([]);
 
   const getBoardGames = async (): Promise<BoardGameItem[]> => {
@@ -26,6 +29,7 @@ export default function BoardGame() {
     getBoardGames().then((data) => {
       setData(data);
     });
+    checkAdmin(navigate);
     // console.log(location);
   }, []);
 

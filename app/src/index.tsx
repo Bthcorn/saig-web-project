@@ -13,6 +13,11 @@ import Orders from "./pages/admin/Orders";
 import Rooms from "./pages/admin/Rooms";
 import Category from "./pages/admin/Category";
 import { Toaster } from "./components/ui/toaster";
+import Game from "./pages/user/Game";
+import Room from "./pages/user/Room";
+import History from "./pages/user/History";
+import User from "./pages/user/User";
+import Booking from "./pages/user/Booking";
 
 const Router = createBrowserRouter([
   {
@@ -21,7 +26,6 @@ const Router = createBrowserRouter([
   },
   {
     path: "/admin",
-    // add middleware to check if user is admin
     children: [
       {
         path: "dashboard",
@@ -52,6 +56,26 @@ const Router = createBrowserRouter([
   {
     path: "/home",
     element: <Home />,
+  },
+  {
+    path: "/boardgame",
+    element: <Game />,
+  },
+  {
+    path: "/booking",
+    element: <Booking />,
+  },
+  {
+    path: "/room",
+    element: <Room />,
+  },
+  {
+    path: "/history",
+    element: <History />,
+  },
+  {
+    path: "/profile",
+    element: <User />,
   },
 ]);
 

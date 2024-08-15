@@ -1,18 +1,21 @@
 import React from "react";
-import { useToast, toast } from "@/components/ui/use-toast";
-import { ToastClose } from "../ui/toast";
+import { toast } from "@/components/ui/use-toast";
+import { ToastProps } from "../ui/toast";
 
-export function ToastDemo({ response }: { response: any }) {
-  const { toast } = useToast();
-  return toast({
-    title: response.data.message,
+export function handleResponse(
+  response: any,
+  message: string,
+  variant: ToastProps["variant"],
+) {
+  toast({
+    title: response.data.message + "!",
     description: (
-      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        <code className="text-white">
+      <pre className="mt-2 rounded-md bg-secondary p-4">
+        <code className="text-black">
           {JSON.stringify(response.data.result, null, 2)}
         </code>
       </pre>
     ),
-    action: <ToastClose />,
+    variant: variant,
   });
 }

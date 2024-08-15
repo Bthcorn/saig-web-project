@@ -28,6 +28,7 @@ import {
   Search,
   CircleUser,
   LayoutList,
+  DoorOpen,
 } from "lucide-react";
 import React from "react";
 import { NavLink } from "react-router-dom";
@@ -53,7 +54,13 @@ export const NavBar = () => {
             </NavLink>
             <NavLink
               to="/admin/dashboard"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              className={({ isActive, isPending }) =>
+                `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
+                  isActive
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground"
+                }`
+              }
             >
               <Home className="h-5 w-5" />
               Dashboard
@@ -99,6 +106,19 @@ export const NavBar = () => {
             >
               <LayoutList className="h-5 w-5" />
               Categories
+            </NavLink>
+            <NavLink
+              to="/admin/rooms"
+              className={({ isActive, isPending }) =>
+                `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
+                  isActive
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground"
+                }`
+              }
+            >
+              <DoorOpen className="h-5 w-5" />
+              Rooms
             </NavLink>
             <NavLink
               to="/admin/customers"
