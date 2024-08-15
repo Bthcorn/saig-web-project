@@ -58,6 +58,15 @@ export const roombookingcols: ColumnDef<Room>[] = [
       return <DataTableColumnHeader column={column} title="Price" />;
     },
     accessorKey: "price",
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("price"));
+      const formatted = new Intl.NumberFormat("th-TH", {
+        style: "currency",
+        currency: "THB",
+      }).format(amount);
+
+      return formatted;
+    },
   },
   {
     header: "Status",
