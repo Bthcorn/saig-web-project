@@ -83,7 +83,7 @@ app.get('/admin/check', async (req, res) => {
 
 app.get('/info', async (req, res) => {
     try {
-        const token = req.headers['authorization'];
+        const token = req.headers.authorization;
         const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
         const user = await prisma.user.findUnique({
             where: {

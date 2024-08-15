@@ -23,6 +23,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 
 import { z } from "zod";
+import { Room } from "../booking-table/room-cols";
+import { BoardGameItem } from "@/components/table/columns";
+import axios from "axios";
+import { getUserInfo, User } from "@/components/login-form/action";
 
 export type ReservationItem = {
   id: string;
@@ -67,6 +71,7 @@ export default function BookingForm({ className }: { className?: string }) {
       customerName: "",
       customerEmail: "",
       customerPhone: "",
+      createdAt: new Date(),
       dateStart: new Date(),
       dateEnd: new Date(),
       duration: 0,
@@ -78,6 +83,10 @@ export default function BookingForm({ className }: { className?: string }) {
   const [selectedEnd, setSelectedEnd] = React.useState<Date>();
   const [timeValue, setTimeValue] = React.useState<string>("00:00");
   const [timeEndValue, setTimeEndValue] = React.useState<string>("00:00");
+
+  const [rooms, setRooms] = React.useState<Room[]>([]);
+  const [boardgames, setBoardgames] = React.useState<BoardGameItem[]>([]);
+  const [userInfo, setUserInfo] = React.useState<User>();
 
   const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const time = e.target.value;
@@ -149,8 +158,60 @@ export default function BookingForm({ className }: { className?: string }) {
     form.setValue("dateEnd", newDate);
   };
 
+  const loadLacalStorage = () => {
+    const boardgame = localStorage.getItem("boardgame");
+    const room = localStorage.getItem("room");
+
+    if (boardgame) {
+      setBoardgames(JSON.parse(boardgame));
+    }
+
+    if (room) {
+      setRooms(JSON.parse(room));
+    }
+  };
+
+  const loadUser = async () => {
+    const response = await axios.get("http://localhost:3001/user/info", {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    });
+    setUserInfo(response.data.user);
+    // console.log(user);
+  };
+
+  React.useEffect(() => {
+    loadLacalStorage();
+    loadUser();
+  }, []);
+
   async function onSubmit() {
-    console.log(form.getValues());
+    try {
+      const payload = {
+        customerName: form.getValues("customerName"),
+        customerEmail: form.getValues("customerEmail"),
+        customerPhone: form.getValues("customerPhone"),
+        dateStart: form.getValues("dateStart"),
+        dateEnd: form.getValues("dateEnd"),
+        duration: form.getValues("duration"),
+        status: form.getValues("status"),
+        boardgames: boardgames,
+        rooms: rooms,
+        userId: userInfo?.id,
+        date: new Date(),
+      };
+
+      console.log(payload);
+
+      const response = await axios.post(
+        "http://localhost:3001/booking/save",
+        payload,
+      );
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

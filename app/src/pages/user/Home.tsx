@@ -56,14 +56,14 @@ export default function Home() {
 
   return (
     <HomePage>
-      <section className="flex w-auto flex-col items-center gap-2 rounded-md px-4 py-8 md:py-12 md:pb-8 lg:py-12 lg:pb-10">
+      <section className="flex w-auto flex-col items-start justify-start gap-2 rounded-md px-4 py-8 sm:items-center md:py-12 md:pb-8 lg:py-12 lg:pb-10">
         <h1 className="text-3xl font-bold leading-tight tracking-tighter lg:text-4xl lg:leading-normal">
           Welcome to the Board Game Booking Website
         </h1>
         <p className="text-lg font-light text-foreground">
           Let's find your favorite board game! 🎲.
         </p>
-        <div className="flex w-full items-center justify-center gap-2 py-2">
+        <div className="flex w-full items-start gap-2 py-2 sm:items-center sm:justify-center">
           <Button variant={"default"} size="default">
             <NavLink to="/boardgame">Get Started</NavLink>
           </Button>

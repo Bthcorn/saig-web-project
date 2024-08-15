@@ -84,19 +84,19 @@ model Room_Reservation {
 }
 
 model Reservation {
-  id                           String                         @id @default(auto()) @map("_id") @db.ObjectId
-  userId                       String                         @db.ObjectId
-  user                         User                           @relation(fields: [userId], references: [id])
+  id                           String                          @id @default(auto()) @map("_id") @db.ObjectId
+  userId                       String                          @db.ObjectId
+  user                         User                            @relation(fields: [userId], references: [id])
   customerName                 String
   customerEmail                String
   customerPhone                String
-  createdAt                    DateTime                       @default(now())
+  createdAt                    DateTime                        @default(now())
   dateStart                    DateTime
   dateEnd                      DateTime
   duration                     Int
-  status                       String                         @default("PENDING")
-  Room_Reservation_Detail      Room_Reservation_Detail[]
-  BoardGame_Reservation_Detail BoardGame_Reservation_Detail[]
+  status                       String                          @default("PENDING")
+  Room_Reservation_Detail      Room_Reservation_Detail[]?
+  BoardGame_Reservation_Detail BoardGame_Reservation_Detail[]?
 }
 
 model BoardGame_Reservation_Detail {

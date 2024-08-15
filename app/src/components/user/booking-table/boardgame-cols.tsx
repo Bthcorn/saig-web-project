@@ -7,6 +7,7 @@ import { BoardGameItem } from "@/components/table/columns";
 import { DataTableColumnHeader } from "@/components/table/headers";
 import GetCategory from "@/components/table/category";
 import { DrawerDialogDemo } from "@/components/boardgame-dialog";
+import SaveDialog from "./saveboardgame-dialog";
 
 export async function fetchBoardGames(): Promise<BoardGameItem[]> {
   try {
@@ -76,11 +77,7 @@ export const gamebookingcols: ColumnDef<BoardGameItem>[] = [
 
       return (
         <div className="flex flex-1">
-          <DrawerDialogDemo
-            id={boardgame.id}
-            title="Edit"
-            iconprop={<Edit className="h-4 w-4" />}
-          />
+          <SaveDialog prop={boardgame} />
         </div>
       );
     },
