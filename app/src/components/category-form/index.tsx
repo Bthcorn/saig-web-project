@@ -11,7 +11,7 @@ import {
 } from "../ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { set, z } from "zod";
+import { z } from "zod";
 import { BoardGameCategory } from "../table/columns";
 import axios from "axios";
 import { Config } from "../config";

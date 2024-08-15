@@ -34,6 +34,7 @@ app.post('/create', async (req, res) => {
                 status: 'ACTIVE',
             },
         });
+
         const secret = process.env.TOKEN_SECRET;
         const token = jwt.sign(user, secret, { expiresIn: '1d' });
         res.send({ token: token, user: user });
@@ -41,6 +42,29 @@ app.post('/create', async (req, res) => {
         res.status(400).send({ error: error.message });
     }
 });
+
+app.post('/update', async (req, res) => {
+    try {
+        const token = req.headers.authorization;
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+
+        const user = await prisma.user.update({
+            where: {
+                id: decoded.id,
+            },
+            data: {
+                name: req.body.name,
+                email: req.body.email,
+                username: req.body.username,
+            },
+        });
+        res.send({ message: 'User updated successfully' });
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
+
 
 app.post('/signin', async (req, res) => {
     try {

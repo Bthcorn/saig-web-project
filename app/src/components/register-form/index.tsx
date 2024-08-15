@@ -15,6 +15,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Register } from "./actions";
+import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -43,6 +44,10 @@ export function SignUpForm() {
     Register(user, navigate).then((res) => {
       if (res) {
         navigate("/");
+        toast({
+          title: "Success",
+          description: "Account created successfully",
+        });
       }
     });
   };

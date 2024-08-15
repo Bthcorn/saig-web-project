@@ -1,7 +1,6 @@
 import axios from "axios";
 import { redirect, useNavigate } from "react-router-dom";
 import { Config } from "../config";
-import { toast } from "../ui/use-toast";
 import { handleResponse } from "../toast";
 
 export async function Login(user: any, navigate: ReturnType<typeof useNavigate>) {

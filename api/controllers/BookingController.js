@@ -103,9 +103,12 @@ app.post('/save', async (req, res) => {
 //get booking by user id
 app.get('/list', async (req, res) => {
   try {
-    // const token = req.headers.authorization;
-    // const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
     const bookings = await prisma.reservation.findMany({
+      where: {
+        userId: decoded.id,
+      },
       include: {
         Room_Reservation_Detail: true,
         BoardGame_Reservation_Detail: true,

@@ -1,4 +1,5 @@
 import { HomePage } from "@/components/user/home";
+import { ProfileForm } from "@/components/user/user-profile";
 import React from "react";
 
 export default function User() {
@@ -12,6 +13,9 @@ export default function User() {
           Welcome to your profile page. Here you can view your profile details
           and make changes to your account.
         </p>
+      </section>
+      <section className="flex w-auto flex-col items-start rounded-md px-4 py-4 md:pb-8 lg:pb-10">
+        <ProfileForm />
       </section>
     </HomePage>
   );
