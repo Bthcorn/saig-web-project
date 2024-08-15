@@ -120,6 +120,26 @@ app.get('/list', async (req, res) => {
   }
 });
 
+app.get('/list/all', async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    if (decoded.role !== 'ADMIN') {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+
+    const bookings = await prisma.reservation.findMany({
+      include: {
+        Room_Reservation_Detail: true,
+        BoardGame_Reservation_Detail: true,
+      },
+    });
+    res.send({ result: bookings });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
 app.post('/update/:reservationid', async (req, res) => {
   try {
     const booking = await prisma.reservation.update({
