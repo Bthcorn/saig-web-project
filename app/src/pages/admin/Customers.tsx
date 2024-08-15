@@ -26,15 +26,7 @@ export default function Customers() {
   return (
     <AdminPage>
       <div className="flex flex-row items-center justify-between">
-        <h1 className="text-lg font-semibold md:text-2xl">Rooms</h1>
-        {/* <Button className="mt-4 gap-3">
-          <PlusCircle className="h-6 w-6" />
-          Board Game
-        </Button> */}
-        {/* <RoomDrawerDialog
-          title="Add Board Game"
-          iconprop={<PlusCircle className="h-6 w-6" />}
-        /> */}
+        <h1 className="text-lg font-semibold md:text-2xl">Customers</h1>
       </div>
       <div
         className="flex flex-1 justify-center rounded-lg border border-dashed shadow-sm"

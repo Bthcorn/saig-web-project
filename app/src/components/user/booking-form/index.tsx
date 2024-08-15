@@ -27,6 +27,7 @@ import { Room } from "../booking-table/room-cols";
 import { BoardGameItem } from "@/components/table/columns";
 import axios from "axios";
 import { getUserInfo, User } from "@/components/login-form/action";
+import { windowReload } from "@/components/table/actions";
 
 export type ReservationItem = {
   id: string;
@@ -208,6 +209,10 @@ export default function BookingForm({ className }: { className?: string }) {
         "http://localhost:3001/booking/save",
         payload,
       );
+
+      localStorage.removeItem("boardgame");
+      localStorage.removeItem("room");
+      windowReload();
       console.log(response);
     } catch (error) {
       console.error(error);

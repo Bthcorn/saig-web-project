@@ -1,6 +1,7 @@
 import axios from "axios";
 import { redirect, useNavigate } from "react-router-dom";
 import { Config } from "../config";
+import { handleResponse } from "../toast";
 
 export async function Login(user: any, navigate: ReturnType<typeof useNavigate>) {
   try {
@@ -33,7 +34,7 @@ export async function Logout(navigate: ReturnType<typeof useNavigate>) {
 
 export async function Register(user: any, navigate: ReturnType<typeof useNavigate>) {
   try {
-    const res = await axios.post(Config.apiPath + '/user/signup', user)
+    const res = await axios.post(Config.apiPath + '/user/create', user)
 
     if (res.data.token) {
       localStorage.setItem('token', res.data.token)
@@ -58,6 +59,7 @@ export async function checkAdmin(navigate: ReturnType<typeof useNavigate>) {
   const token = localStorage.getItem('token')
   if (!token) {
     navigate('/')
+    handleResponse('Unauthorized', 'You are not authorized to access this page', 'destructive')
   }
   try {
     const res = await axios.get(Config.apiPath + '/user/admin/check', {
@@ -69,10 +71,12 @@ export async function checkAdmin(navigate: ReturnType<typeof useNavigate>) {
 
     if (res.data.message !== 'Authorized') {
       navigate('/')
+      handleResponse('Unauthorized', 'You are not authorized to access this page', 'destructive')
     }
   } catch (error) {
     console.log(error);
     navigate('/')
+    handleResponse('Unauthorized', 'You are not authorized to access this page', 'destructive')
   }
 }
 
