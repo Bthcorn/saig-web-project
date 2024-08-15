@@ -1,9 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
-import { Edit } from "lucide-react";
 import { DataTableColumnHeader } from "@/components/table/headers";
 import { Badge } from "@/components/ui/badge";
-import { RoomDrawerDialog } from "@/components/room-dialog";
+import SaveRoomDialog from "./saveroom-dialog";
 
 export type Room = {
   id: string;
@@ -92,11 +91,7 @@ export const roombookingcols: ColumnDef<Room>[] = [
 
       return (
         <div className="flex flex-1">
-          <RoomDrawerDialog
-            id={room.id}
-            title="Edit"
-            iconprop={<Edit className="h-4 w-4" />}
-          />
+          <SaveRoomDialog prop={room} />
         </div>
       );
     },

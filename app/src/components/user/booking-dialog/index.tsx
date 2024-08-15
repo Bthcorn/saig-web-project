@@ -14,7 +14,7 @@ import BookingForm from "../booking-form";
 import { BoardGameItem } from "@/components/table/columns";
 import { Room } from "../booking-table/room-cols";
 
-export default function BookingDialog(boardgame: any, room: any) {
+export default function BookingDialog() {
   const [open, setOpen] = React.useState(false);
 
   return (

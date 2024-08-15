@@ -16,6 +16,7 @@ import { BoardGameItem } from "@/components/table/columns";
 import { Room } from "./room-cols";
 import { SpeakerModerateIcon } from "@radix-ui/react-icons";
 import { toast } from "@/components/ui/use-toast";
+import { windowReload } from "@/components/table/actions";
 
 export default function SaveDialog({ prop }: { prop: BoardGameItem }) {
   const [open, setOpen] = React.useState(false);
@@ -36,6 +37,7 @@ export default function SaveDialog({ prop }: { prop: BoardGameItem }) {
         description: "Added successfully",
       });
       localStorage.setItem("boardgame", JSON.stringify(arr));
+      windowReload();
       return;
     } else {
       toast({
@@ -63,13 +65,13 @@ export default function SaveDialog({ prop }: { prop: BoardGameItem }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" size={"sm"}>
-          <PlusSquare className="mr-2 h-6 w-6" /> Add
+        <Button variant="outline" size={"icon"}>
+          <PlusSquare className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add</DialogTitle>
+          <DialogTitle>Add Board Game</DialogTitle>
         </DialogHeader>
         <span className="text-center text-2xl font-bold">{prop.name}</span>
         <span className="text-center text-lg font-light">
