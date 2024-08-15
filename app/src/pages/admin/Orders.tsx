@@ -10,8 +10,12 @@ export default function Orders() {
   const fetchOrders = async (): Promise<Reservations[]> => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/booking/list",
-        {},
+        "http://localhost:3001/booking/list/all",
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        },
       );
       console.log(response.data.result);
       setData(response.data.result);
