@@ -25,38 +25,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Reservations } from "../table/order-columns";
+import { format } from "date-fns";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
+  id: z.string(),
+  customerName: z.string().min(2, {
     message: "Name must be at least 2 characters",
   }),
-  status: z.enum(["ACTIVE", "INACTIVE"]),
+  status: z.enum(["APPROVED", "PENDING", "CANCELLED"]),
 });
 
-export default function CategoryForm({
+export default function OrderForm({
   id,
   className,
 }: {
   id?: string;
   className?: string;
 }) {
-  const form = useForm<BoardGameCategory>({
+  const form = useForm<Reservations>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      status: "ACTIVE",
+      customerName: "",
+      status: "PENDING",
     },
     reValidateMode: "onChange",
   });
 
-  const [categories, setCategories] = React.useState<BoardGameCategory>();
+  const [orders, setOrders] = React.useState<Reservations>();
 
-  async function fetchCategories(): Promise<BoardGameCategory> {
+  async function fetchOrders(): Promise<Reservations> {
     try {
       const response = await axios.get(
-        "http://localhost:3001/game/category/" + id,
+        "http://localhost:3001/booking/get/" + id,
       );
-      setCategories(response.data.result);
+      setOrders(response.data.result);
       console.log(response.data.result ?? "no data");
       return response.data.result;
     } catch (error) {
@@ -66,39 +69,34 @@ export default function CategoryForm({
   }
 
   React.useEffect(() => {
-    // console.log(boardGame);
-    fetchCategories().then((data) => {
-      form.reset(data);
+    fetchOrders().then((data) => {
+      if (data) {
+        form.reset(data);
+      }
     });
-  }, []);
+  }, [id]);
 
   async function OnSubmit() {
     try {
-      if (id === undefined) {
+      if (id !== undefined) {
+        // console.log("Submitting form with data:", rooms);
         const response = await axios.post(
-          "http://localhost:3001/game/category/create",
+          `http://localhost:3001/booking/update/${id}`,
           form.getValues(),
         );
+        console.log(response.data.result);
         await handleResponse(response);
-        fetchCategories();
-      } else {
-        const response = await axios.put(
-          "http://localhost:3001/game/category/update/" + id,
-          form.getValues(),
-        );
-        await handleResponse(response);
-        fetchCategories();
+        fetchOrders(); // Re-fetch to ensure state is up-to-date
+        windowReload();
       }
-      windowReload();
     } catch (error) {
       console.error(error);
     }
   }
 
   function handleResponse(response: any) {
-    // setRes(response.data);
     toast({
-      title: response.data.message + "!",
+      title: "Update Successful",
       description: (
         <pre className="mt-2 rounded-md bg-secondary p-4">
           <code className="text-black">
@@ -117,18 +115,34 @@ export default function CategoryForm({
       >
         <FormField
           control={form.control}
-          name="name"
+          name="id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>ID</FormLabel>
               <FormControl>
-                <Input placeholder="category name" {...field} />
+                <Input {...field} value={field.value} placeholder="Order ID" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
+        <FormField
+          control={form.control}
+          name="customerName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Customer Name</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  value={field.value}
+                  placeholder="Customer Name"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="status"
@@ -138,11 +152,12 @@ export default function CategoryForm({
               <FormControl>
                 <Select {...field} onValueChange={field.onChange}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Status" />
+                    <SelectValue placeholder="Select Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ACTIVE">Active</SelectItem>
-                    <SelectItem value="INACTIVE">Inactive</SelectItem>
+                    <SelectItem value="PENDING">Pending</SelectItem>
+                    <SelectItem value="APPROVED">Approved</SelectItem>
+                    <SelectItem value="CANCELLED">Cancelled</SelectItem>
                   </SelectContent>
                 </Select>
               </FormControl>

@@ -65,12 +65,16 @@ export const roomcolumns: ColumnDef<Room>[] = [
     cell: ({ row }) => {
       const room = row.original;
 
-      return room.status === "AVAILABLE" ? (
-        <Badge variant={"default"} className="rounded-sm px-1">
-          {room.status}
-        </Badge>
-      ) : (
-        <Badge variant={"secondary"} className="rounded-sm px-1">
+      return (
+        <Badge
+          variant={
+            room.status === "UNAVAILABLE"
+              ? "secondary"
+              : room.status === "AVAILABLE"
+                ? "default"
+                : "destructive"
+          }
+        >
           {room.status}
         </Badge>
       );

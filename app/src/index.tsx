@@ -18,11 +18,16 @@ import Room from "./pages/user/Room";
 import History from "./pages/user/History";
 import User from "./pages/user/User";
 import Booking from "./pages/user/Booking";
+import SignUp from "./pages/SignUp";
 
 const Router = createBrowserRouter([
   {
     path: "/",
     element: <SignIn />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
   },
   {
     path: "/admin",

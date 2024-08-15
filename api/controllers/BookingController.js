@@ -7,15 +7,14 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-app.get('/list', async (req, res) => {
+app.get('/get/:reservationid', async (req, res) => {
   try {
-    const bookings = await prisma.reservation.findMany({
-      include: {
-        Room: true,
-        User: true,
+    const booking = await prisma.reservation.findFirst({
+      where: {
+        id: req.params.reservationid,
       },
     });
-    res.send({ result: bookings });
+    res.send({ result: booking });
   } catch (error) {
     res.status(404).send({ error: error.message });
   }
@@ -48,6 +47,8 @@ app.post('/save', async (req, res) => {
         },
       });
 
+      //need to check if the boardgame is available and update the status to unavailable
+
       const boardgame_reservation_detail = await prisma.boardGame_Reservation_Detail.create({
         data: {
           date: req.body.date,
@@ -62,7 +63,6 @@ app.post('/save', async (req, res) => {
             }
           },
           price: rowBoardGame.price,
-
         },
       });
     }
@@ -73,6 +73,7 @@ app.post('/save', async (req, res) => {
           id: req.body.rooms[i].id,
         },
       });
+      //need to check if the room is available and update the status to unavailable
 
       const room_reservation_detail = await prisma.room_Reservation_Detail.create({
         data: {
@@ -98,6 +99,132 @@ app.post('/save', async (req, res) => {
   }
 }
 );
+
+//get booking by user id
+app.get('/list', async (req, res) => {
+  try {
+    // const token = req.headers.authorization;
+    // const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    const bookings = await prisma.reservation.findMany({
+      include: {
+        Room_Reservation_Detail: true,
+        BoardGame_Reservation_Detail: true,
+      },
+    });
+    res.send({ result: bookings });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
+app.post('/update/:reservationid', async (req, res) => {
+  try {
+    const booking = await prisma.reservation.update({
+      where: {
+        id: req.params.reservationid,
+      },
+      data: {
+        status: req.body.status,
+      },
+    });
+    res.send({ result: booking });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
+//get booking by booking id
+app.get('/list/boardgames/:reservationid', async (req, res) => {
+  try {
+    const bookings = await prisma.boardGame_Reservation_Detail.findMany({
+      where: {
+        reservationId: req.params.reservationid,
+      },
+    });
+    res.send({ result: bookings });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
+app.post('/update/boardgame/approve/:reservationid', async (req, res) => {
+  try {
+    const bookings = await prisma.boardGame_Reservation_Detail.updateMany({
+      where: {
+        reservationId: req.params.reservationid,
+      },
+      data: {
+        status: 'APPROVED',
+      },
+    });
+    res.send({ result: bookings });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
+app.post('/update/boardgame/cancel/:reservationid', async (req, res) => {
+  try {
+    const bookings = await prisma.boardGame_Reservation_Detail.updateMany({
+      where: {
+        reservationId: req.params.reservationid,
+      },
+      data: {
+        status: 'CANCELLED',
+      },
+    });
+    res.send({ result: bookings });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
+//get booking by booking id
+app.post('/list/rooms/:reservationid', async (req, res) => {
+  try {
+    const bookings = await prisma.room_Reservation_Detail.findMany({
+      where: {
+        reservationId: req.params.reservationid,
+      },
+    });
+    res.send({ result: bookings });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
+app.post('/update/room/approve/:reservationid', async (req, res) => {
+  try {
+    const bookings = await prisma.room_Reservation_Detail.updateMany({
+      where: {
+        reservationId: req.params.reservationid,
+      },
+      data: {
+        status: 'APPROVED',
+      },
+    });
+    res.send({ result: bookings });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
+app.get('/update/room/cancel/:reservationid', async (req, res) => {
+  try {
+    const bookings = await prisma.room_Reservation_Detail.updateMany({
+      where: {
+        reservationId: req.params.reservationid,
+      },
+      data: {
+        status: 'CANCELLED',
+      },
+    });
+    res.send({ result: bookings });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
 
 
 module.exports = app;

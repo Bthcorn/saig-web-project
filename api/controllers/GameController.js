@@ -123,6 +123,7 @@ app.put('/category/update/:id', async (req, res) => {
             },
             data: {
                 name: req.body.name,
+                status: req.body.status,
             },
         });
         res.send({ result: category, message: 'Category updated' });
