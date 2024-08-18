@@ -52,7 +52,7 @@ export const ordercolumns: ColumnDef<Reservations>[] = [
       return <DataTableColumnHeader column={column} title="Date Start" />;
     },
     cell: ({ row }) => {
-      return <div>{format(row.original.createdAt, "PPP pp")}</div>;
+      return <div>{format(row.original.dateStart, "PPP pp")}</div>;
     },
   },
   {
@@ -61,7 +61,7 @@ export const ordercolumns: ColumnDef<Reservations>[] = [
       return <DataTableColumnHeader column={column} title="Date End" />;
     },
     cell: ({ row }) => {
-      return <div>{format(row.original.createdAt, "PPP pp")}</div>;
+      return <div>{format(row.original.dateEnd, "PPP pp")}</div>;
     },
   },
   {
