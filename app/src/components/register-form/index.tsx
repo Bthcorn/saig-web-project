@@ -16,7 +16,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Register } from "./actions";
 import { toast } from "../ui/use-toast";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { handleResponse } from "../toast";
 
 const formSchema = z.object({
@@ -83,6 +90,7 @@ export function SignUpForm() {
                     <FormControl>
                       <Input placeholder="John Doe" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -97,6 +105,7 @@ export function SignUpForm() {
                     <FormControl>
                       <Input placeholder="johndoe" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -111,6 +120,7 @@ export function SignUpForm() {
                     <FormControl>
                       <Input placeholder="email" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -129,6 +139,7 @@ export function SignUpForm() {
                         type="password"
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
