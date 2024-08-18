@@ -12,8 +12,10 @@ export async function Login(user: any, navigate: ReturnType<typeof useNavigate>)
       localStorage.setItem('token', res.data.token)
       if (res.data.user.role === 'ADMIN') {
         navigate('/admin/dashboard', { replace: true })
+        handleResponse('Welcome', 'Welcome Admin: ' + res.data.user.name, "default")
       } else if (res.data.user.role === 'GUEST') {
         navigate('/home', { replace: true })
+        handleResponse('Welcome', 'Welcome Guest: ' + res.data.user.name, "default")
       } else {
         navigate('/')
       }
@@ -22,6 +24,7 @@ export async function Login(user: any, navigate: ReturnType<typeof useNavigate>)
     }
   } catch (error) {
     console.log(error);
+    handleResponse('Unauthorized', 'You are not authorized to access this page', 'destructive')
     navigate('/')
   }
 }

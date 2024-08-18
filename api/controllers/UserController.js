@@ -35,9 +35,12 @@ app.post('/create', async (req, res) => {
             },
         });
 
-        const secret = process.env.TOKEN_SECRET;
-        const token = jwt.sign(user, secret, { expiresIn: '1d' });
-        res.send({ token: token, user: user });
+        if (user != null) {
+            const secret = process.env.TOKEN_SECRET;
+            const token = jwt.sign(user, secret, { expiresIn: '1d' });
+            return res.send({ token: token, user: user });
+        }
+        res.status(400).send({ error: 'User not created' });
     } catch (error) {
         res.status(400).send({ error: error.message });
     }
