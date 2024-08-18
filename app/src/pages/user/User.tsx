@@ -1,8 +1,17 @@
+import { checkAuth } from "@/components/login-form/action";
 import { HomePage } from "@/components/user/home";
 import { ProfileForm } from "@/components/user/user-profile";
+import { check } from "prettier";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function User() {
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    checkAuth(navigate);
+  });
+
   return (
     <HomePage>
       <section className="flex w-auto flex-col gap-2 rounded-md px-4 py-8 sm:items-start md:py-12 md:pb-8 lg:py-12 lg:pb-10">

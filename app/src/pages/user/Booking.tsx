@@ -1,4 +1,4 @@
-import { getUserInfo, User } from "@/components/login-form/action";
+import { checkAuth, getUserInfo, User } from "@/components/login-form/action";
 import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -11,7 +11,7 @@ import {
 } from "@/components/user/booking-table/room-cols";
 import { HomePage } from "@/components/user/home";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -54,6 +54,7 @@ export default function Booking() {
     [],
   );
   const [bookedroom, setBookedRoom] = React.useState<Room[]>([]);
+  const navigate = useNavigate();
 
   const fetchBoardGames = async () => {
     try {
@@ -151,6 +152,7 @@ export default function Booking() {
     fetchBoardGames();
     fetchRooms();
     fetchFromLocal();
+    checkAuth(navigate);
     // fetchRoomsFromLocal();
   }, []);
 

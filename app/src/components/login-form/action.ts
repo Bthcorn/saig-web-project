@@ -2,6 +2,7 @@ import axios from "axios";
 import { redirect, useNavigate } from "react-router-dom";
 import { Config } from "../config";
 import { handleResponse } from "../toast";
+import { decodeJwt } from "jose";
 
 export async function Login(user: any, navigate: ReturnType<typeof useNavigate>) {
   try {
@@ -10,16 +11,14 @@ export async function Login(user: any, navigate: ReturnType<typeof useNavigate>)
     if (res.data.token) {
       localStorage.setItem('token', res.data.token)
       if (res.data.user.role === 'ADMIN') {
-        navigate('/admin/dashboard')
+        navigate('/admin/dashboard', { replace: true })
       } else if (res.data.user.role === 'GUEST') {
-        navigate('/home')
+        navigate('/home', { replace: true })
       } else {
-        // navigate('/')
-        redirect('/')
+        navigate('/')
       }
     } else {
-      // navigate('/')
-      redirect('/')
+      navigate('/')
     }
   } catch (error) {
     console.log(error);
@@ -29,6 +28,8 @@ export async function Login(user: any, navigate: ReturnType<typeof useNavigate>)
 
 export async function Logout(navigate: ReturnType<typeof useNavigate>) {
   localStorage.removeItem('token')
+  localStorage.removeItem('room')
+  localStorage.removeItem('boardgame')
   navigate('/')
 }
 
@@ -57,6 +58,11 @@ export async function checkAuth(navigate: ReturnType<typeof useNavigate>) {
 
 export async function checkAdmin(navigate: ReturnType<typeof useNavigate>) {
   const token = localStorage.getItem('token')
+  if (token) {
+    const decode = decodeJwt(token)
+    console.log(decode);
+  }
+
   if (!token) {
     navigate('/')
     handleResponse('Unauthorized', 'You are not authorized to access this page', 'destructive')
@@ -75,7 +81,7 @@ export async function checkAdmin(navigate: ReturnType<typeof useNavigate>) {
     }
   } catch (error) {
     console.log(error);
-    navigate('/')
+    navigate('/signin')
     handleResponse('Unauthorized', 'You are not authorized to access this page', 'destructive')
   }
 }
