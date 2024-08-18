@@ -1,4 +1,4 @@
-import { User } from "@/components/login-form/action";
+import { checkAuth, User } from "@/components/login-form/action";
 import { fetchBoardGames } from "@/components/table/columns";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +14,7 @@ import { HomePage } from "@/components/user/home";
 import axios from "axios";
 import { format } from "date-fns";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export type HistoryItem = {
   id: string;
@@ -46,6 +47,8 @@ export default function History() {
   const [boardgameInfo, setBoardGameInfo] = React.useState<
     BoardGameReservationDetail[]
   >([]);
+
+  const navigate = useNavigate();
 
   const fetchHistory = async (): Promise<HistoryItem[]> => {
     try {
@@ -106,6 +109,7 @@ export default function History() {
       setHistory(data);
     });
     // console.log(history);
+    checkAuth(navigate);
   }, []);
 
   return (

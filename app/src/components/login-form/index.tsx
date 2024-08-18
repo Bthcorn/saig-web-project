@@ -39,6 +39,10 @@ export function LoginForm() {
     Login(user, navigate);
   };
 
+  // setTimeout(() => {
+  //   handleLogin();
+  // }, 3000);
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>

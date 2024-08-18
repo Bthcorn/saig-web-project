@@ -19,6 +19,8 @@ import History from "./pages/user/History";
 import User from "./pages/user/User";
 import Booking from "./pages/user/Booking";
 import SignUp from "./pages/SignUp";
+import { ProtectedAdminRoute } from "./routes/ProtectedAdminRoute";
+import { ProtectedUserRoute } from "./routes/ProtectedUserRoute";
 
 const Router = createBrowserRouter([
   {
@@ -31,6 +33,7 @@ const Router = createBrowserRouter([
   },
   {
     path: "/admin",
+    element: <ProtectedAdminRoute />,
     children: [
       {
         path: "dashboard",
@@ -59,28 +62,34 @@ const Router = createBrowserRouter([
     ],
   },
   {
-    path: "/home",
-    element: <Home />,
-  },
-  {
-    path: "/boardgame",
-    element: <Game />,
-  },
-  {
-    path: "/booking",
-    element: <Booking />,
-  },
-  {
-    path: "/room",
-    element: <Room />,
-  },
-  {
-    path: "/history",
-    element: <History />,
-  },
-  {
-    path: "/profile",
-    element: <User />,
+    path: "/",
+    element: <ProtectedUserRoute />,
+    children: [
+      {
+        path: "/home",
+        element: <Home />,
+      },
+      {
+        path: "/boardgame",
+        element: <Game />,
+      },
+      {
+        path: "/booking",
+        element: <Booking />,
+      },
+      {
+        path: "/room",
+        element: <Room />,
+      },
+      {
+        path: "/history",
+        element: <History />,
+      },
+      {
+        path: "/profile",
+        element: <User />,
+      },
+    ],
   },
 ]);
 
